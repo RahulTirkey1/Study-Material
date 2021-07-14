@@ -1,0 +1,53 @@
+ngOnChanges method is used for tracking input property change.
+
+
+Child Component:-
+
+child.component.ts,
+import { Component, OnInit, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  templateUrl: './child.component.html',
+  styleUrls: ['./child.component.css']
+})
+export class ChildComponent implements OnChanges {
+
+  @Input(loggedIn)loginFlag :boolean;
+
+    message: string;
+
+  constructor() { }
+
+ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    const loggedInValue = changes['loginFlag'];
+    if (loggedInValue.currentValue === true) {
+      this.message = 'Welcome back Vishwas!!';
+    } else {
+      this.message = 'Please log in';
+    }
+  }
+
+}
+
+child.component.html,
+<h2>Child Component</h2>
+
+{{message}}
+
+
+---------------------------------------------
+Parent Component:-
+
+app.component.html,
+export class AppComponent {
+  title = 'app';
+  userLoggedIn:boolean;
+}
+app.component.html,
+<h1>Parent Component</h1>
+<button (click)="userLoggedIn=true">Login</p>
+<button (click)="userLoggedIn=false">Please log in</p>
+
+<app-child [loggedIn]='userLoggedIn'></app-child>

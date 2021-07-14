@@ -1,0 +1,79 @@
+Create a service class,
+
+greet.service.ts,
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GreetService {
+
+  private _teacherGreetedSource = new Subject<string>();
+
+  teacherGreeted$ = this._teacherGreetedSource.asObservable();
+
+  greet(message: string) {
+    this._teacherGreetedSource.next(message);
+  }
+
+  constructor() { }
+}
+---------------------------------------------------
+In app.component.ts,
+import { Component } from '@angular/core';
+import { GreetService } from './greet.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'app';
+
+  constructor(private _greetService: GreetService) { }
+
+  greetStudent() {
+    this._greetService.greet('Good Morning');
+  }
+  appreciateStudent() {
+    this._greetService.greet('Well Done');
+  }
+}
+
+app.component.html,
+<h1>Teacher</h1>
+<button (click)='greetStudent()'>Greet Student</button>
+<button (click)='appreciateStudent()'>Appreciate Student</button>
+<app-child></app-child>
+
+--------------------------------------------
+child.component.ts,
+import { Component, OnInit } from '@angular/core';
+import { GreetService } from '../greet.service';
+
+@Component({
+  selector: 'app-child',
+  templateUrl: './child.component.html',
+  styleUrls: ['./child.component.css']
+})
+export class ChildComponent implements OnInit {
+  constructor(private _greetService: GreetService) { }
+
+  ngOnInit() {
+    this._greetService.teacherGreeted$.subscribe(
+      message => {
+        if (message === 'Good Morning') {
+          alert('Good Morning Teacher!');
+        } else if (message === 'Well Done') {
+          alert('Thank you Teacher!');
+        }
+      }
+    );
+  }
+
+}
+
+child.component.html,
+<h2>Student</h2>

@@ -1,0 +1,31 @@
+Incase of select tag to validate, we get the option from DB and by default the first option comes "default".Now due to required attribute it won't show errors and that's an issue.
+So, here we have to manually do form validations.
+ 
+---------------------------------------- 
+In app.component.html,
+   </div>
+
+    <div class="form-group">
+       <select class="custom-select" #topic="ngModel" [class.is-invalid]="topicHasError && topic.touched" name="topic" [(ngModel)]="userModel.topic">
+        <option value="default">I am interested in</option>
+        <option *ngFor="let topic of topics">{{ topic }}</option>
+      </select>
+      <small class="text-danger" [class.d-none]="!topicHasError || topic.untouched">Please choose a topic</small>      
+    </div>
+
+---------------------------------------------------------------------
+app.component.ts,
+export class AppComponent {
+  title = 'app';
+  topics = ['Angular', 'React', 'Vue'];
+  userModel = new User('Rob', 'rob@test.com', 5556665566, 'default', 'morning', true);       //default comes when it is fetched from DB.Since it cannot be empty string '' ,we have to manually do extra validations.
+  topicHasError = true;
+
+  validateTopic(value) {
+    if (value === 'default') {
+      this.topicHasError = true;
+    } else {
+      this.topicHasError = false;
+    }
+  }
+}

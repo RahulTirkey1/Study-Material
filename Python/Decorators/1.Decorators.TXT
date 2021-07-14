@@ -1,0 +1,50 @@
+Decorators can be thought of as functions which modify the functionality of another function. They help to make your code shorter 
+
+I->def hello(name='Jose'):
+       return 'Hello '+name
+I->hello()
+O->'Hello Jose'
+I->greet = hello
+   greet
+O-><function __main__.hello>
+I->greet()
+O->'Hello Jose'
+I->del hello
+I->hello()
+E->NameError                                 Traceback (most recent call last)
+   <ipython-input-18-a803225a2f97> in <module>()
+   ----> 1 hello()
+   NameError: name 'hello' is not defined
+I->greet()
+O->'Hello Jose'
+
+Creating a Decorator:-
+-----------------------
+I->def new_decorator(func):
+      def wrap_func():
+          print "Code would be here, before executing the func"
+          func()
+          print "Code here will execute after the func()"
+      return wrap_func
+
+I->def func_needs_decorator():
+       print "This function is in need of a Decorator"
+I->func_needs_decorator()
+O->This function is in need of a Decorator
+I->func=new_decorator(func_needs_decorator)
+I->func()
+O->Code would be here, before executing the func
+   This function is in need of a Decorator
+   Code here will execute after the func()
+
+
+So what just happened here? A decorator simple wrapped the function and modified its behavior. Now lets understand how we can rewrite this code using the @ symbol, which is what Python uses for Decorators
+
+Instead we could add that functionality with one line,
+I->@new_decorator
+   def func_needs_decorator():
+       print "This function is in need of a Decorator"
+I->func_needs_decorator()
+O->Code would be here, before executing the func
+   This function is in need of a Decorator
+   Code here will execute after the func()

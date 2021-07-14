@@ -1,0 +1,40 @@
+It manipulates only the view but nothing to data in the classes.
+@Component({
+  selector: 'app-test',
+  template: `
+    <h2>{{"Codevolution" | lowercase}}</h2>        //codevolution
+    <h2>{{"Codevolution" | uppercase}}</h2>        //CODEVOLUTION
+    <h2>{{"Welcome to codevolution" | titlecase}}</h2>    //Welcome To Codevolution
+    <h2>{{"Codevolution" | slice:3:6}}</h2>     //evo
+    <h2>{{person | json}}</h2>                 //{"firstName":"John","lastName":"Doe"}
+    <h2>{{5.678 | number:'1.2-3'}}</h2>        //5.678
+    <h2>{{5.678 | number:'3.4-5'}}</h2>        //005.6780
+    <h2>{{5.678 | number:'3.1-2'}}</h2>        //005.68     Here it goes to the nearest integer
+    
+    
+    <h2>{{0.25 | percent}}</h2>         //25%
+    <h2>{{0.25 | currency}}</h2>        //$0.25
+    <h2>{{0.25 | currency:'GBP'}}</h2>  //€0.25
+    <h2>{{0.25 | currency:'GBP':'code'}}</h2>   //GBP0.25
+    
+    <h2>{{date}}</h2>                   
+    <h2>{{date | date:'short'}}</h2>
+    <h2>{{date | date:'shortDate'}}</h2>
+    <h2>{{date | date:'shortTime'}}</h2> 
+  `,
+  styles: []
+})
+export class TestComponent implements OnInit {
+  
+
+  public person = {
+    "firstName": "John",
+    "lastName": "Doe"
+  }
+
+  public date = new Date();
+  constructor() { }
+
+  ngOnInit() {
+     }
+}

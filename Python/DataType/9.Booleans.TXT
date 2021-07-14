@@ -1,0 +1,4 @@
+I-> type(False)
+O-> bool
+I-> 2>1
+O-> True

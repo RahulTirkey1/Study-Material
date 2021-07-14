@@ -1,0 +1,35 @@
+I->class Dog():
+      def __init__(self,breed,age):          //Here init is like constructor,and self is like referring to class.
+        self.breed=breed
+        self.age=age
+I->dog=Dog(breed="GSD",age=12)
+I->dog.breed
+O->'GSD'
+I->type(dog)
+O->__main__.Dog
+
+I->class Dog():
+      species='mammal'
+      def __init__(self,breed,age):          
+        self.breed=breed
+        self.age=age
+      def func(self):
+        print('Woof.... I am {}'.format(self.breed)
+I->dog=Dog("GSD",12)
+I->dog.species
+O->mammal
+I->dog.func()
+O->Woof.... I am GSD
+
+I->class Dog():
+      species='mammal'
+      def __init__(self,breed,age):          
+        self.breed=breed
+        self.age=age
+      def func(self,name):
+        print('Woof.... I am {} and my name is {}'.format(self.breed,name)
+I->dog=Dog("GSD",12)
+I->dog.species
+O->mammal
+I->dog.func('Tom')
+O->Woof.... I am GSD and my name is Tom

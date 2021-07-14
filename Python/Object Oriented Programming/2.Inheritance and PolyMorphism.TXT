@@ -1,0 +1,67 @@
+Inheritance,
+-----------------
+I->class Animal():
+      def __init__(self):
+           print('I am an animal')
+      def eat(self):
+          print('Animal eating')
+I->class Dog(Animal)
+      def __init__(self):
+           Animal.__init__(self)
+           print('I am a Dog')
+      def eat(self):                  //Overiding the base class
+          print('Dog eating')
+I->dog=Dog()
+O->I am an animal
+   I am a Dog
+I->dog.eat()
+O->Dog eating
+
+Polymorphism
+----------------------
+I->class Dog()
+      def __init__(self,name):
+           self.name=name
+      def eat(self):                  
+          print('Dog eating')
+I->class Cat()
+      def __init__(self,name):
+           self.name=name
+      def eat(self):                  
+          print('Cat eating')
+I->tom=Cat('Tom')
+   bob=Dog('Bob')
+I->for pet in [tom,bob]
+       print(pet.eat())
+O->Cat eating
+   Dog eating
+I->def func(i):
+      print(i.eat())
+I->func(tom)
+O->Cat eating
+
+Abstract Method which should be overidden by child class,
+I->class Animal():
+      def __init__(self,name):
+           self.name=name
+      def eat(self):
+          raise NotImplementedError('Subclass must this abstract method')
+I->animal=Animal('Dog')
+   animal.eat()
+E->NotImplementedError                       Traceback (most recent call last)
+  <ipython-input-25-f10dba1592c5> in <module>
+  ----> 1 animal.eat()
+  <ipython-input-22-94443c9b390e> in eat(self)
+         3            self.name=name
+         4       def eat(self):
+   ----> 5           raise NotImplementedError('Subclass must this abstract method')
+
+  NotImplementedError: Subclass must this abstract method
+I->class Cat(Animal):
+      def __init__(self,name):
+           self.name=name
+      def eat(self):                  
+          print('Cat eating')
+I->tom=Cat('Tom')
+   tom.eat()
+O->Cat eating

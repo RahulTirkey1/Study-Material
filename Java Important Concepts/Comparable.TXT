@@ -1,0 +1,42 @@
+For normal array sorting of integer,double,float,String,long we can do by,
+Arrays.sort(al)            //Here al is an array of primitives of specific type.
+
+Comparable
+------------------
+Java provides Comparable interface which should be implemented by any custom class if we want to use Arrays or Collections sorting methods.
+
+The Comparable interface has compareTo(T obj) method which is used by sorting methods, you can check any Wrapper, String or Date class to confirm this.
+We should override this method in such a way that it returns a negative integer, zero, or a positive integer if “this” object is less than, equal to, or greater than the object passed as an argument.
+
+public class Employee implements Comparable<Employee> 
+{
+    private int id;
+    private String name;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public Employee(int id, String name)
+    {
+        this.id = id;
+        this.name = name;
+    }
+
+public int compareTo(Employee emp) 
+{  //let's sort the employee based on an id in ascending order
+      return (this.id - emp.id);
+}
+}
+
+Class Simple
+{
+public static void main(String args[])
+{
+Now we can use,
+Arrays.sort(al);         //al is the array of Employee objects
+}
+}

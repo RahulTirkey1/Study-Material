@@ -1,0 +1,17 @@
+->Sets are unordered collections of unique elements.It means there can be one representation of the same object
+
+I-> myset=set()
+I-> myset
+O-> set()
+I-> myset.add(1)
+I-> myset
+O-> {1}
+I-> myset.add(2)
+I-> myset
+O-> {1,2}
+I-> myset.add(2)
+I-> myset
+O-> {1,2}
+I-> mylist=[1,1,1,2,5,5,3,3,3,3,3,6,8,8,8]
+I-> set(mylist)
+O-> {1, 2, 3, 5, 6, 8}

@@ -1,0 +1,43 @@
+It is a superset of Javascript and EcmaScript.
+
+boolean          true/false
+number           supports integer and floating point numbers
+string           text data enclosed in single or double quotes
+any              supports "any" datatype assignment.
+
+Syntax:-
+let variablename: datatype=value;
+
+We can also use template strings.
+let firstname: string="Ram";
+let lastname: string="Kumar";
+console.log("Hello it's"+" "+firstname+" "+lastname);
+console.log(`Hello it's ${firstname} ${lastname}); //Template String same as in js.
+
+Suppose, we change the give the value of firstname to integer type then it will throw an error in compliation
+and runtime. It also generates the js file.To handle this and to prevent that no error should be there.
+C:\>tsc -noEmitOnError filename.ts
+
+Loops:-                                         
+------------
+for(let i=0;i<5;i++)
+{console.log(i);
+}
+
+Arrays:-
+-----------
+let num: number[]=[1,4.2644,5,3.4,6,9];
+for(let i=0;i<num.length;i++)
+{console.log(num[i]);
+}
+
+We can also use simplified for loop for the above example
+for(let i of num)
+{
+if(i==5)
+console.log(i+" My favourite");
+else
+console.log(i);
+}
+num.push(10)          //To add new elements into an array.
+

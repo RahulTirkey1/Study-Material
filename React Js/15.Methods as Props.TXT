@@ -1,0 +1,46 @@
+It is used for passing props from child component to parent component.
+
+ParentComponent.js,
+---------------------
+import React, { Component } from 'react'
+import ChildComponent from './ChildComponent'
+
+class ParentComponent extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      parentName: 'Parent'
+    }
+
+    this.greetParent = this.greetParent.bind(this)
+  }
+
+  greetParent(childName) {
+    alert(`Hello ${this.state.parentName} from ${childName}`)
+  }
+
+  render() {
+    return (
+      <div>
+        <ChildComponent greetHandler={this.greetParent} />
+      </div>
+    )
+  }
+}
+
+export default ParentComponent
+
+ChildComponent.js,
+-----------------------
+import React from 'react'
+
+const ChildComponent = (props) => {
+  return (
+    <div>
+      <button onClick={() => props.greetHandler('child')}>Greet Parent</button>
+    </div>
+  )
+}
+
+export default 

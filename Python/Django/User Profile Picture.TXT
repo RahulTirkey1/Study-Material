@@ -1,0 +1,36 @@
+pip install Pillow                                //Image Library
+
+users/models.py
+-------------------
+from django.db import models
+from django.contrib.auth.models import User
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+users/admin.py                              //For registering with admin site
+-------------------------
+from django.contrib import admin
+from .models import Profile
+
+admin.site.register(Profile)
+
+
+Now check in shell,
+-------------------------
+python manage.py shell
+I->from django.contrib.auth.models import User
+I->user=User.objects.filter(username='rahul').first()
+I->user
+O-><User: rahul>
+I->user.profile.image
+O-><ImageFieldFile: profile_pics/BallooLogo.png>
+I->user.profile.image.width
+O->70
+I->user.profile.image.url
+O->'profile_pics/BallooLogo.png'

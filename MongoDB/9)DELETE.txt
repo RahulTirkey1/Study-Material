@@ -1,0 +1,2 @@
+1)db.users.drop()                            //Drops the collection.
+2)db.dropDatabase()                          //Drops the Database.

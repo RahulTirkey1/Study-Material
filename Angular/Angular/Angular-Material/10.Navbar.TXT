@@ -1,0 +1,19 @@
+app.component.ts,
+.navbar {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+span {
+  padding-right: 1rem;
+}
+
+In app.component.html,
+<mat-toolbar class='navbar' color='primary'>
+  <div>Codevolution</div>
+  <div>
+    <span>Home</span>
+    <span>About</span>
+    <span>Services</span>
+  </div>
+</mat-toolbar>

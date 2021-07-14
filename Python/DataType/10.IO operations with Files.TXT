@@ -1,0 +1,33 @@
+Suppose there is a abc.txt file, in the same directory.
+I-> d=open('abc.txt')
+I-> e=open(cst.txt)      //This file doesn't exist
+O-> FileNotFoundError                         Traceback (most recent call last)
+      <ipython-input-51-04f16e9b0505> in <module>
+      ----> 1 file=open('abc.txt')
+      FileNotFoundError: [Errno 2] No such file or directory: 'abc.txt' 
+I-> d.read() 
+O -> 'Hello Again.\nGood Morning a nice day.\nWelcome.'           //Here it returns in a single line so \n means new line.
+I-> d.read()   
+O-> ''                                                //Here it returns empty strings as it depends upon the cursor. After the first read the cursor went to last.
+I-> d.seek(0)                                         //Places the cursor again at the start
+O-> 0 
+I-> d.read() 
+O -> 'Hello Again.\nGood Morning a nice day.\nWelcome.'
+I-> d.readlines()
+O->['Hello Again\n',
+    'Good Morning\n',
+    'Welcome']
+I-> e=open('C:\\Program\\cst.txt')              //To open a text file which is present in some other location
+I-> d.close()                           //To avoid resource leaks
+I-> with open('abc.txt') as d:          //Here we don't have to manually close the file.It is a newer approach
+         contents=d.read()
+I-> d
+O-> 'Hello Again.\nGood Morning a nice day.\nWelcome.'
+I-> with open('abc.txt',mode='w') as f:
+         f.write('Hello World. \nGod Bless You')
+I-> with open('abc.txt',mode='r') as f:
+         print(f.read())
+O-> Hello World. 
+    God Bless You
+
+     

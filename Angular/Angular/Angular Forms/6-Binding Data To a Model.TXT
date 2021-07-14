@@ -1,0 +1,77 @@
+Create a new class, named user.ts Here we will capture the data 
+export class User {
+    constructor(
+        public name: string,
+        public email: string,
+        public phone: number,
+        public topic: string,
+        public timePreference: string,
+        public subscribe: boolean
+    ) {}
+}
+-------------------------------------------------
+In app.component.ts,
+import { Component } from '@angular/core';
+import { User } from './user';
+
+@Component({
+  selector: 'app-root',
+})
+export class AppComponent {
+  title = 'app';
+  topics = ['Angular', 'React', 'Vue'];
+  userModel = new User('Rob', 'rob@test.com', 5556665566, 'Angular', 'morning', true);      //This value will be rendered when the page is rendered
+------------------------------------------
+In app.component.html,
+<div class="container-fluid">
+  <h2>Bootcamp Enrollment Form</h2>
+  {{userForm.value | json}}
+  
+    <hr>
+  {{userModel | json}}
+
+  <form #userForm="ngForm">                  //We have used #userForm as the template reference variable, Here the ngForm directive exports itself as the string ngForm and by assigning it to a reference variable we control of the directive itself
+
+    <div class="form-group">
+      <label>Name</label>
+*      <input type="text" class="form-control" name="name" [(ngModel)]="userModel.name">   //For two way binding and to transfer the data from the htmltemplate to class and vice-versa. userModel is a object which will capture the values of form control elements. 
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+*      <input type="email" class="form-control" name="email" [(ngModel)]="userModel.email"
+    </div>
+
+    <div class="form-group">
+      <label>Phone</label>
+*      <input type="tel" class="form-control" name="phone" [(ngModel)]="userModel.phone">
+    </div>
+
+    <div class="form-group">
+*      <select class="custom-select" name="topic" [(ngModel)]="userModel.topic">
+        <option selected value="">I am interested in</option>
+        <option *ngFor="let topic of topics">{{ topic }}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label>Time preference</label>
+      <div class="form-check">
+*        <input class="form-check-input" type="radio" name="timePreference" value="morning" [(ngModel)]="userModel.timePreference">
+        <label class="form-check-label">Morning (9AM - 12PM)</label>
+      </div>
+      <div class="form-check">
+*        <input class="form-check-input" type="radio" name="timePreference" value="evening" [(ngModel)]="userModel.timePreference">
+        <label class="form-check-label">Evening (5PM - 8PM)</label>
+      </div>
+    </div>
+
+    <div class="form-check mb-3">
+*      <input class="form-check-input" type="checkbox" name="subscribe" [(ngModel)]="userModel.subscribe">
+      <label class="form-check-label">
+        Send me promotional offers
+      <label>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</div>
+  </form>
+</div>

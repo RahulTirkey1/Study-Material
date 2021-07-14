@@ -1,0 +1,103 @@
+mport React,{Component} from 'react';
+class Count extends Component
+{
+    constructor()
+    {
+        super()
+        this.state={count:0}
+    }
+    increment()
+    {
+        this.setState({
+             count: this.state.count+1
+        })
+    }
+    decrement()
+    {
+        if(this.state.count!==0)
+        {
+        this.setState({
+            count:this.state.count-1
+        })
+    }
+    }
+    render()
+    {
+
+
+        return(
+            <div>
+              <h1>Count: {this.state.count}</h1>
+              <button onClick={()=>{this.increment()}}>Increment</button>
+              &nbsp;&nbsp;
+              <button onClick={()=>{this.decrement()}}>Decrement</button>
+            </div>);
+        }
+    }
+
+export default Count
+
+---------------------------------------------------------------------------------------------------------------------
+
+increment()
+    {
+        this.setState({
+             count: this.state.count+1         //It will change to 1
+        })
+      console.log(this.state.count)           //But it will show 0
+    }
+setState method runs asynchronously so if we write some statement then it will run before the setState method, to make it run synchronously,'
+setState has can take another argument as a callback method where the statement can be executed to follow process synchronously.
+
+So to fix the above problem,we put another argument in setState
+Code:-
+increment()
+    {
+        this.setState({
+             count: this.state.count+1         //It will show 1
+        },()=>console.log(this.state.count)    //It will show 1
+        );
+       console.log(this.state.count)           //It will show 0
+    }
+So any statement that we have to put after setStatement should be placed callback function argument passed to setState
+
+
+If we call multiple times setState in a function,then React groups multiple setState calls into a single update for better performance.
+Code:-
+increment()
+    {
+        this.setState({
+             count: this.state.count+1
+        })
+    }
+incrementfive()   //It will show five times "1" then after pressing button again show five "2"
+{
+increment();
+increment();
+increment();
+increment();
+increment();
+}
+
+return(
+            <div>
+              <h1>Count: {this.state.count}</h1>
+              <button onClick={()=>{this.incrementfive()}}>Increment</button> 
+</div>)
+So,in the above code,we expected when incrementfive() is called,state value should be changed to "5",but it doesn't seem to be the case.
+So,we must update the state based on the previous state then,we use a function instead of object.
+Code:-
+increment()
+    {
+        this.setState((prevState)=>({
+             count:prevState.count+1
+        }))
+    }
+Then if we call incrementfive() then,it will show "5" in the DOM. So,we should always remember that a function has access to prevState to do some calculations.
+The secondparameter besides prevState is props(optional).
+increment()
+    {
+        this.setState((prevState,props)=>({
+             count: this.state.count+props.something 
+        }))
+    }

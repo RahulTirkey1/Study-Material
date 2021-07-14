@@ -1,0 +1,15 @@
+*Use functions to route the request and response.
+It contains two parts RouterFunction and HandlerFunction.
+
+Sequencing:-
+-------------
+Client->Server->RouterFunction->HandlerFunction
+
+As the name suggests RouterFunction is the one which routes the given endpoint to the appropriate Handler function.
+RouterFunction is similar to @RequestMapping
+
+As for Handler function it is similar to body of the @RequestMapping. It receives request and it sends back response.
+
+Handler Function has two classes, i.e, ServerRequest and ServerResponse.
+ServerRequest represents the HttpRequest.
+ServerResponse represents the HttpResponse.

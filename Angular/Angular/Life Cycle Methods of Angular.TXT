@@ -1,0 +1,8 @@
+1)ngOnInit()-Called once, after the first ngOnChanges().
+2)ngOnChanges()-Called before ngOnInit() and whenever one or more data-bound input properties change.
+3)ngDoCheck()-Called immediately after ngOnChanges() on every change detection run, and immediately after ngOnInit() on the first run.
+4)ngAfterContentInit()-Called once after the first ngDoCheck().
+5)ngAfterContentChecked()-Called after ngAfterContentInit() and every subsequent ngDoCheck().
+6)ngAfterViewInit()-Called once after the first ngAfterContentChecked().
+7)ngAfterViewChecked()-Called after the ngAfterViewInit() and every subsequent ngAfterContentChecked().
+8)ngOnDestroy()-Called immediately before Angular destroys the directive or component.

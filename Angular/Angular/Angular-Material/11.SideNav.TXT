@@ -1,0 +1,36 @@
+In app.component.css,
+mat-sidenav-container {
+  height: 100%;
+}
+
+mat-sidenav, mat-sidenav-content {
+  padding: 16px;
+}
+
+mat-sidenav {
+  background-color: lightcoral;
+  width: 200px;
+}
+
+In app.component.html,
+<mat-sidenav-container>
+  <mat-sidenav #sidenav [(opened)]="opened" mode="side" (opened)="log('Opened')" (closed)="log('Closed')">Sidenav</mat-sidenav>   //It can also take mode value of push and over
+  <mat-sidenav-content>
+    Main -
+    <button (click)="opened=!opened">ToggleOpened</button>
+    <button (click)="sidenav.open()">Open</button>
+    <button (click)="sidenav.close()">Close</button>
+    <button (click)="sidenav.toggle()">Toggle</button>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+In app.component.ts,
+export class SidenavComponent {
+
+  opened = false;
+
+  log(state) {
+    console.log(state)
+  }
+
+}

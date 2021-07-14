@@ -1,0 +1,13 @@
+As mongoDb saves the persisted data in the form of files.So we can fix that location in the local storage. We can also add the logpath so that we can monitor previous logs
+C:\>mongod --dbpath C:\>programfiles\mongodb\server\data\db  --logpath C:\>logs\log.log        //All the logging will be stored in log.log file.
+
+Linux and MacOs can use the --fork command while starting mongod through which in the background the mongo server will be started and in that same terminal,the mongo shell can be started.
+However,in Windows it's not possible,so the following can be achieved by typing "net start MongoDB",it starts the mongo server in the backgreound.
+To stop it type "net stop MongoDB".
+While we are at shell,we can stop the server by typing,
+C:\>use admin
+C:\>db.shutdownServer()           //It stops the server.
+
+When you have opened the server,open a second terminal and type "mongo --help",to see all the options.
+Even after connecting to the mongo shell, we can also type help to see all the commands.
+Under a particular database type "db.help()",to see all the options for dealing with the database.

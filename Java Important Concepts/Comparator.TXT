@@ -1,0 +1,110 @@
+Comparator interface is used to order the objects of user-defined classes. 
+A comparator object is capable of comparing two objects of two different classes. 
+Following function compare obj1 with obj2
+
+Syntax:- public int compare(Object obj1, Object obj2)          //returns 1 if greater,0 for equal and -1 for less according to the order.
+         public boolean equals(Object obj)                     //returns true if equal.    
+
+
+How does Collections.Sort() work?
+Internally the Sort method does call Compare method of the classes it is sorting. 
+To compare two elements, it asks “Which is greater?” Compare method returns -1, 0 or 1 to say if it is less than, equal, or greater to the other.
+It uses this result to then determine if they should be swapped for its sort.
+
+Both these methods from Java 7. 
+
+Non-Generic Style:-
+--------------------------------------------------
+Example:-
+
+class AgeComparator implements Comparator{  
+public int compare(Object o1,Object o2){  
+Student s1=(Student)o1;  
+Student s2=(Student)o2;  
+if(s1.age==s2.age)  
+return 0;  
+else if(s1.age>s2.age)  
+return 1;  
+else  
+return -1;  
+}  
+}
+
+Class Simple{  
+public static void main(String args[])
+{    
+Collections.sort(al,new NameComparator());       //al is of type ArrayList where all the Student objects are added
+Iterator itr=al.iterator();  
+while(itr.hasNext()){  
+Student st=(Student)itr.next();  
+System.out.println(st.rollno+" "+st.name+" "+st.age);  
+}
+}  
+
+Java Comparator Generic
+-------------------------------
+
+Exmaple:-
+
+class AgeComparator implements Comparator<Student>{  
+public int compare(Student s1,Student s2){  
+if(s1.age==s2.age)  
+return 0;  
+else if(s1.age>s2.age)  
+return 1;  
+else  
+return -1;  
+}  
+}  
+
+Class Simple
+{
+public static void main(String args[])
+{
+Collections.sort(al,new NameComparator());      //al is of type ArrayList where all the Student objects are added
+for(Student st: al){  
+System.out.println(st.rollno+" "+st.name+" "+st.age);  
+}
+}
+
+Comparator Java 8
+----------------------------- 
+Java 8 Comparator interface is a functional interface that contains only one abstract method. Now, we can use the Comparator interface as the assignment target for a lambda expression or method reference. 
+Yes, Comparator is a functional interface. The equals is an abstract method overriding one of the public methods of java.lang.Object, this doesn’t count as an abstract method.
+ 
+Example:-
+
+Comparator<Student> cm1=Comparator.comparing(Student::getName);        //Student is a class which contains name,age,rollno ....etc fields
+Collections.sort(al,cm1); 
+
+
+
+Another way of displaying:-
+List<Employee> employees  = getEmployees();                 //Get employees return a list of Empoloyee type objects.
+
+     
+    //Sort all employees by first name
+    employees.sort(Comparator.comparing(e -> e.getFirstName()));
+     
+    //OR you can use below
+    employees.sort(Comparator.comparing(Employee::getFirstName)); 
+
+   //Sort all employees by first name; And then reversed
+    Comparator<Employee> comparator = Comparator.comparing(e -> e.getFirstName());
+    employees.sort(comparator.reversed());
+
+   //Sorting on multiple fields; Group by.
+     Comparator<Employee> groupByComparator = Comparator.comparing(Employee::getFirstName).thenComparing(Employee::getLastName);
+     employees.sort(groupByComparator);
+
+Parallel sort (with multiple threads)
+---------------------------------------------
+You can sort the collection of objects in parallel using multiple threads as well. It is going to be very fast if the collection is big enough to have thousands of objects. 
+For a small collection of objects, normal sorting is good enough and recommended.
+
+//Parallel Sorting
+Employee[] employeesArray = employees.toArray(new Employee[employees.size()]);
+Arrays.parallelSort(employeesArray, groupByComparator);     
+
+//For Parallel Sorting we can use,
+employees.parallelStream().sorted(Comparator.comparing(Employee::getName));

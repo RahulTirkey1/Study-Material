@@ -1,0 +1,177 @@
+The Effect Hook lets you perform side effects in functional components.
+It is a close replacement for componentDidMount,componentDidUpdate and componentWillUnmount
+
+Suppose there are two state and we want to call useEffect only when a particular state is changed.
+
+HookCounterOne.js,
+import React, { useState, useEffect } from 'react'
+
+function HookCounterOne() {
+	const [count, setCount] = useState(0)
+	const [name, setName] = useState('')
+	useEffect(() => {
+		console.log('useEffect - Updating document title ')
+		document.title = `You clicked ${count} times`
+	}, [count])
+	return (
+		<div>
+			<input type="text" value={name} onChange={e => setName(e.target.value)} />
+			<button onClick={() => setCount(count + 1)}>
+				useEffect - Click {count} times
+			</button>
+		</div>
+	)
+}
+
+export default HookCounterOne
+
+
+Suppose we want to run effects only once
+------------------------------------------------
+HookMouse.js,
+import React, { useState, useEffect } from 'react'
+
+function HookMouse() {
+	const [x, setX] = useState(0)
+	const [y, setY] = useState(0)
+
+	const logMousePosition = e => {
+		console.log('Mouse event')
+		setX(e.clientX)
+		setY(e.clientY)
+	}
+
+	useEffect(() => {
+		console.log('useFffect called')
+    window.addEventListener('mousemove', logMousePosition)
+
+	}, [])
+	return (
+		<div>
+			Hooks - X - {x} Y - {y}
+		</div>
+	)
+}
+
+export default HookMouse
+
+Suppose We want to implement useEffect with cleanup, in class component terms we call it componentDidMount
+-------------------------------------------------------------------------------------------------------------
+Then the function we return in useEffect method is the cleanup code,
+
+MouseContainer.js,
+import React, { useState } from 'react'
+import HookMouse from './HookMouse'
+
+function MouseContainer() {
+	const [display, setDisplay] = useState(true)
+	return (
+		<div>
+			<button onClick={() => setDisplay(!display)}>Toggle display</button>
+			{display && <HookMouse />}
+		</div>
+	)
+}
+
+export default MouseContainer
+
+HookMouse.js,
+import React, { useState, useEffect } from 'react'
+
+function HookMouse() {
+	const [x, setX] = useState(0)
+	const [y, setY] = useState(0)
+
+	const logMousePosition = e => {
+		console.log('Mouse event')
+		setX(e.clientX)
+		setY(e.clientY)
+	}
+
+	useEffect(() => {
+		console.log('useFffect called')
+    window.addEventListener('mousemove', logMousePosition)
+
+    return () => {
+      console.log('Component unmounting code')
+      window.removeEventListener('mousemove', logMousePosition)
+    }
+	}, [])
+	return (
+		<div>
+			Hooks - X - {x} Y - {y}
+		</div>
+	)
+}
+
+export default HookMouse
+
+Sometimes we miss putting the dependency thinking to give a call once on useEffect and it may not get the desired results,
+----------------------------------------------------------------------------------------------------------------------------
+IntervalHookCounter.js,
+import React, {useState, useEffect} from 'react'
+
+function IntervalHookCounter() {
+  const [count, setCount] = useState(0)
+
+  const tick = () => {
+    setCount(count + 1)
+  }
+  useEffect(() => {
+    const interval = setInterval(tick, 1000)
+    return () => {
+      clearInterval(interval)
+    }
+	}, [count])
+  return (
+    <div>
+      {count}
+    </div>
+  )
+}
+
+export default IntervalHookCounter
+
+To Fetch an API,
+--------------------
+DataFetching.js,
+
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+
+function DataFetching() {
+	const [post, setPost] = useState({})
+	const [id, setId] = useState(1)
+	const [idFromButtonClick, setIdFromButtonClick] = useState(1)
+
+	useEffect(() => {
+		axios
+			.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+			.then(res => {
+        console.log(res)
+        setPost(res.data)
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}, [idFromButtonClick])
+
+	const handleClick = () => {
+		setIdFromButtonClick(id)
+	}
+
+	return (
+		<div>
+			<input type="text" value={id} onChange={e => setId(e.target.value)} />
+			<button type="button" onClick={handleClick}>Fetch Post</button>
+			<div>{post.title}</div>
+			{/* <ul>
+				{posts.map(post => (
+          <li key={post.id}>{post.title}</li>
+				))}
+			</ul> */}
+		</div>
+	)
+}
+
+export default DataFetching

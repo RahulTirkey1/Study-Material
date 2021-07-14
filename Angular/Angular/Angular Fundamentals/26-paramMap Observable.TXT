@@ -1,0 +1,99 @@
+Suppose, we want to navigate to the next route from the same component,
+
+app-routing.module.ts,
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { DepartmentListComponent } from './department-list/department-list.component';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
+
+const routes: Routes = [
+  { path:'', redirectTo:'/departments', pathMatch:'full},        //It should be rendered by default upon ng serve
+  { path: 'departments', component: DepartmentListComponent },
+  { path: 'departments/:id', component: DepartmentDetailComponent},
+  { path: 'employees',   component: EmployeeListComponent },
+  { path:'**',component:PageNotFoundComponent }              //This is a wildcard route and it should be at the last, if any route doesn't match then render it.
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+export const routingComponents = [DepartmentListComponent, EmployeeListComponent,PageNotFoundComponent,DepartmentDetailComponent]
+
+------------------------------------------------
+
+department-list.component.ts,
+import { Component, OnInit } from '@angular/core';
+import { Router} from '@angular/router';
+
+@Component({
+  selector: 'app-department-list',
+  template: `
+    <h3>
+      Department List
+    </h3>
+    <ul class="items">
+      <li *ngFor="let department of departments" (click)="onSelect(department)">
+        <span class="badge">{{department.id}}</span> {{department.name}}
+      </li>
+  </ul>
+  `,
+  styles: []
+})
+export class DepartmentListComponent implements OnInit {
+
+  departments = [
+    {"id": 1, "name": "Angular"},
+    {"id": 2, "name": "Node"},
+    {"id": 3, "name": "MongoDB"},
+    {"id": 4, "name": "Ruby"},
+    {"id": 5, "name": "Bootstrap"}
+  ]
+  constructor(private router: Router) { }
+
+  ngOnInit() {
+  }
+
+  onSelect(department) {
+    this.router.navigate(['/departments', department.id]);                   //navigate tries to form a link parameter array same as in app-routing.module.ts
+
+  }
+}
+------------------------------------------------
+department-detail.component.ts,
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+@Component({
+  selector: 'app-department-detail',
+  template: `
+    <h3>You selected department with id = {{departmentId}}</h3>
+    <a (click)="goPrevious()">Previous</a>
+    <a (click)="goNext()">Next</a>
+  `,
+  styles: []
+})
+export class DepartmentDetailComponent implements OnInit {
+
+  public departmentId;
+  constructor(private route: ActivatedRoute){}
+
+  ngOnInit() {
+    //let id = parseInt(this.route.snapshot.paramMap.get('id'));        //Here the route will be changed but the onNit method won't be called again because the same component will be not be re-rendered.
+    this.route.paramMap.subscribe((params: ParamMap) => {                
+      let id = parseInt(params.get('id'));
+      this.departmentId = id;
+
+    } );
+  }
+
+  goPrevious(){
+    let previousId = this.departmentId - 1;
+    this.router.navigate(['/departments', previousId]);
+  }
+  goNext(){
+   let nextId = this.departmentId + 1;    
+   this.router.navigate(['/departments', nextId]);
+  }
+
+}

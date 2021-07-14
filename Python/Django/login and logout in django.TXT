@@ -1,0 +1,10 @@
+Django creates a login and logout by default for us,
+
+urls.py,
+-------------
+from django.contrib.auth import views as auth_views
+
+urlpatterns = [
+    path('login/', auth_views.LoginView.as_view(template_name='users/Login.html'), name='login'),                    //Here by default Django has assumes a template in admin\account\login..But we create our own login template like this,
+    path('logout/', auth_views.LogoutView.as_view(template_name='users/Logout.html'), name='logout')
+  ]

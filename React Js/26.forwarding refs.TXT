@@ -1,0 +1,48 @@
+We use forwarding refs to pass the ref to the native element of children components.
+
+FRParentInput.js,
+import React, { Component } from 'react'
+import FRInput from './FRInput'
+
+export class FRParentInput extends Component {
+  constructor(props) {
+    super(props)
+    this.inputRef = React.createRef()
+  }
+
+  clickHandler = () => {
+    this.inputRef.current.focus()
+  }
+
+	render() {
+		return (
+			<div>
+        <FRInput ref={this.inputRef} />
+        <button onClick={this.clickHandler}>Focus Input</button>
+			</div>
+		)
+	}
+}
+
+export default FRParentInput
+
+FRInput.js,
+import React from 'react'
+
+// function FRInput() {
+//   return (
+//     <div>
+//       <input type="text"></input>
+//     </div>
+//   )
+// }
+
+const FRInput = React.forwardRef((props, ref) => {
+	return (
+		<div>
+      <input type="text" ref={ref} />
+		</div>
+	)
+})
+
+export default FRInput

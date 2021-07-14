@@ -1,0 +1,8 @@
+Here [class.is-invalid], class is for the class-binding conditional classes to be attached when satisying the condition, is-invalid is actually a class from Bootstrap.
+We can also put pattern validation and a lot of validations according to our choice.
+
+<input type="text" #name="ngModel" required class="form-control" 
+                [class.is-invalid]="name.invalid && name.touched" name="name" [(ngModel)]="userModel.name">
+
+<input type="tel" #phone="ngModel" pattern="^\d{10}$" class="form-control"
+                             [class.is-invalid]="phone.invalid && phone.touched" name="phone" [(ngModel)]="userModel.phone">

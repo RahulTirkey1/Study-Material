@@ -1,0 +1,131 @@
+*An abstract class represents a general concept,
+*We can't create an instance of abstract class. But we can create instance of concrete subclass extending abstract class.
+*Abstract class can also have abstract methods.
+*But these methods must be implemented by concrete subclasses.
+
+Example 1:-
+
+Shape.ts file,
+export abstract class Shape {
+
+    constructor(private _x: number, private _y: number) {
+    }
+
+    public get x(): number {
+        return this._x;
+    }
+
+    public set x(value: number) {
+        this._x = value;
+    }
+
+    public get y(): number {
+        return this._y;
+    }
+
+    public set y(value: number) {
+        this._y = value;
+    }
+
+    getInfo(): string {
+        return `x=${this._x}, y=${this._y}`;
+    }
+
+    abstract calculateArea(): number;
+}
+
+Circle.ts file,
+import { Shape } from './Shape';
+
+export class Circle extends Shape {
+
+    calculateArea(): number {
+        return Math.PI * Math.pow(this._radius, 2);
+    }
+
+    constructor(theX: number, theY: number,
+                private _radius: number) {
+
+        super(theX, theY);
+    }
+
+    public get radius(): number {
+        return this._radius;
+    }
+
+    public set radius(value: number) {
+        this._radius = value;
+    }
+
+    getInfo(): string {
+        return super.getInfo() + `, radius=${this._radius}`;
+    }
+
+}
+
+Rectangle.ts file,
+import { Shape } from './Shape';
+
+export class Rectangle extends Shape {
+
+    calculateArea(): number {
+        return this._width * this._length;
+    }
+
+    constructor(theX: number, theY: number,
+                private _width: number, private _length: number) {
+
+        super(theX, theY);
+    }
+
+    public get width(): number {
+        return this._width;
+    }
+    
+    public set width(value: number) {
+        this._width = value;
+    }
+
+    public get length(): number {
+        return this._length;
+    }
+
+    public set length(value: number) {
+        this._length = value;
+    }
+
+    getInfo(): string {
+        return super.getInfo() + `, width=${this._width}, length=${this._length}`;
+    }
+
+}
+
+ArrayDriver.ts file,
+import { Shape } from './Shape';
+import { Circle } from './Circle';
+import { Rectangle } from './Rectangle';
+
+let myCircle = new Circle(5, 10, 20);
+let myRectangle = new Rectangle(0, 0, 3, 7);
+
+// declare an array of shapes ... initially empty
+let theShapes: Shape[] = [];
+
+// add the shapes to the array
+theShapes.push(myCircle);
+theShapes.push(myRectangle);
+
+for (let tempShape of theShapes) {
+    console.log(tempShape.getInfo());
+    console.log(tempShape.calculateArea());
+    console.log();
+}
+
+Output:-
+---------
+x=5 y=10 radius=20
+1256.632772
+
+x=0 y=0 width=3 length=7
+21
+ 

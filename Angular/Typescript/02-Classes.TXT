@@ -1,0 +1,26 @@
+lass Customer {
+
+    firstName: string;               //by default access modifiers will be public if explicitly not specified anything.
+    lastName: string;
+
+    constructor(theFirst: string, theLast: string) {
+        this.firstName = theFirst;
+        this.lastName = theLast;
+    }
+}
+
+// let's create an instance
+let myCustomer = new Customer("Martin", "Dixon");
+
+console.log(myCustomer.firstName);
+console.log(myCustomer.lastName);
+
+Nole there are certain access modifiers,
+public-accessible to all the classes(by default)
+protected-accessible only to classes and sub-classes
+private-accessible to only it's class.
+
+****In the above example we have accessed the properties firstname and lastname from outside the class.It will display result because it is public.
+    If the above access modifiers would be private then it would have thrown an error. Even through it will still be compile and run the desired output.
+    To prevent it, we have to use,
+C:\>tsc --noEmitOnError Customer.ts 

@@ -1,0 +1,21 @@
+int sum=0;int k=1,sum1=0;
+     for(int i=0;i<a.size();i++)
+     {
+            int b[]=new int[i+1];
+          for(int j=0;j<=i;j++)
+          {
+            b[j]=a.get(j);
+          }
+          Arrays.sort(b);
+          for(int l=0;l<b.length;l++)
+          {
+            sum1+=b[l]*k;
+            k++;                           
+          }
+          sum+=sum1;
+          sum1=0;k=1;
+     
+    }
+    BigInteger u=BigInteger.valueOf(sum);
+    BigInteger v=u.mod(BigInteger.TEN.pow(9).add(BigInteger.valueOf(7)));
+    return v;

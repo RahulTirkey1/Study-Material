@@ -1,0 +1,28 @@
+Previously we wanted the trigger changes in the DOM from class to templates.
+Here we want to change the values depending upon the events from the templates to the classes.
+
+Component({
+  selector: 'app-test',
+  template: ` <div>
+      <button (click)="onClick($event)">Greet</button>
+      <button (click)="greeting = 'Welcome Vishwas'">Greet Vishwas</button>    //Since we have less code in the handler method, so we can also directly assign here.
+      <h2>{{greeting}}</h2>
+    </div>
+  `,
+  styles: []
+ })
+export class TestComponent implements OnInit {
+
+public greeting = "";
+  constructor() { }
+
+  ngOnInit() {
+
+    return "Hello " + this.name;
+  }
+
+  onClick(event){
+    console.log(event)                         //Prints object of click event
+    this.greeting = event.type;                   //Displays click 
+  }
+}

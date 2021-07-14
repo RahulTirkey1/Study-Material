@@ -1,0 +1,9 @@
+1.Easy to use and similar to Angular Js forms.
+2.Two way Data Bindinga and ngModel.
+3.Bulky HTML and minimal component code.
+4.Automatically tracks the form and form elements state and validity.
+5.Unit Testing is a challenge.
+6.Readability decreases with complex forms and validations.
+7.Suitable for simple scenarios.
+
+ 

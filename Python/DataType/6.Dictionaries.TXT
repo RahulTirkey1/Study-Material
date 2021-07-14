@@ -1,0 +1,32 @@
+->Dictionaries are unordered mappings for storing objects.Dictionaries use a key-value pair
+->This key-value pair allows users to quickly grab objects without needing to know their exact location
+
+	When to use Dictionary and when to List,
+
+Dictionaries-> Objects retrieved by key name.Unordered and cannot be sorted.
+List-> Objects retrieved by location.Ordered sequences and can be sorted or sliced.
+
+I-> prices={'apple':80,'orange':65,'banana':30}
+I-> prices
+O-> {'apple':80,'orange':65,'banana':30}
+I-> prices['orange']
+O-> 65
+
+I-> d={'k1':34,'k2':[12,'hello',34.98],'k3':{'a':34}}
+I-> d['k2']
+O-> [12,'hello',34.98]
+I-> d['k2'][1]
+O-> 'hello'
+I-> d['k3']
+O-> {'a':34}
+I-> d['k3']['a']
+O-> 34
+I-> d['k4']='welcome'
+I-> d
+O-> {'k1':34,'k2':[12,'hello',34.98],'k3':{'a':34},'k4':'welcome'}
+I-> d.keys()
+O-> dict_keys(['k1', 'k2', 'k3'])
+I-> d.values()
+O-> dict_values([34, [12, 'hello', 34.98], {'a': 34}])
+I-> d.items()
+O-> dict_items([('k1', 34), ('k2', [12, 'hello', 34.98]), ('k3', {'a': 34})])

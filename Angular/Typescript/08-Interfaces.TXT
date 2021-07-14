@@ -1,0 +1,59 @@
+*A class can implement multiple inheritances.
+*Define an interface with a method contract.
+*Classes implement the interface accordingly.
+*All classes that implement the interface has to override the interface methods.
+
+Example 1:-
+
+Coach.ts file,
+export interface Coach {
+
+    getDailyWorkout(): string;
+    
+}
+
+CricketCoach.ts file,
+import { Coach } from "./Coach";
+
+export class CricketCoach implements Coach {
+
+    getDailyWorkout(): string {
+        return "Practice your spin bowling technique.";
+    }
+    
+}
+
+GolfCoach.ts
+import { Coach } from "./Coach";
+
+export class GolfCoach implements Coach {
+
+    getDailyWorkout(): string {
+        return "Hit 100 balls at the golf range.";
+    }
+    
+}
+
+Driver.ts file,
+import { CricketCoach } from "./CricketCoach";
+import { GolfCoach } from "./GolfCoach";
+import { Coach } from "./Coach";
+
+let myCricketCoach = new CricketCoach();
+let myGolfCoach = new GolfCoach();
+
+// declare an array for coaches ... initially empty
+let theCoaches: Coach[] = [];
+
+// add the coaches to the array
+theCoaches.push(myCricketCoach);
+theCoaches.push(myGolfCoach);
+
+for (let tempCoach of theCoaches) {
+    console.log(tempCoach.getDailyWorkout());
+}
+
+Output:-
+-----------
+Practice your spin bowling technique.
+Hit 100 balls at the golf range.

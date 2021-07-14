@@ -1,0 +1,55 @@
+*Netty is an asynchronous event-driven network application framework for rapid development of maintainable
+ high performance protocol server & clients.
+
+* It is built on top of Java.
+
+*It is used by Facebook,Google,Instagram,Twitter,Apache Cassandra ad etc,
+
+*Netty supports FTP,HTTP,SMTP,WebSocket and etc,
+
+Whenever a non blocking client sends a request to Netty Server it gets a response as Future(data will be recieved later so continue executing the functions)
+
+As Netty is said to be event driven so it examines every element like retrieving,sending,error etc as events.
+
+Netty-Chanel:-It represents the connection between the client and server.
+
+Netty-Channel + Events
+-------------------------------
+Inbound events:
+ *Requesting for Data
+ *Posting Data and etc,
+
+Outbound events:
+ *Opening or closing a connection.
+ *Sending response to the client.
+
+Netty-Event Loop
+-----------------
+*It's purpose is to look to look for events.
+*It is registered witha single dedicated thread.
+
+Channel Lifecycle:-
+---------------------
+1)Channel is created  - It means server has the established the connection.\
+2)Channel registered with EventLoop - It is needed for the event loop to forward the events to the right channel in the future.Netty handles the event in an asynchronous manner.
+                                      In a single event loop in reality can handle many channel(clients). So it should know which channel it needs to send the response based on an event.
+3)Channel is Active - Client and server is connected.Both are ready to communicate.
+4)Channel InActive - After exchanging all the data, the channel goes to an inactive state which means channel is closed.
+5)Channel Unregistered - Channel unregistered from the eventloop.
+
+Channel Handler is a concept in Netty which takes care of handling all the inbound and outbound events.
+
+It is always advised to write any blocking code to write in a separate thread to free up evenyt queue.
+
+A single event loop can manage more than one channel(client)
+And yes it is possible to have multiple event loops, Number of EventLoop= 2 * Number of processor for virtual machine.
+To know number of processor, type Runtime.getRuntime().availableProcessors()
+
+EventLoopGroup:-
+-----------------
+EventLoops are grouped together to form EventLoopGroup.
+In Netty there are two EventLoopGroups, one is for accepting a new connection and create channels, second's purpose is to handle the events for the accepted channels.
+
+Threads in Netty:-
+------------------
+Number of Threads=2 * Number of processors for the virtual machine.

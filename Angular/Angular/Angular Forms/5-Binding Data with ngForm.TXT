@@ -1,0 +1,58 @@
+When we create a normal form then Angular doesn't mo=ind anything. But as soon as we add FormsModule in imports array in app.module.ts
+As the import was added and if in the html template it found form tag then Angular attaches a ngForm directive which gives us valuable information relating that form tag.
+It could tell what the values of the different form controls are and whether the values are valid or invalid.
+Now to hold the referenece to ngForm directive we use a template reference variable
+
+Now in some forms we can have a subgroup within a form that corresponds to a particular details like in Address section, we can have state,city,pincode. We can use ngModelGroup to keep track of it,
+Ex:- <div ngModelGroup="address">.......(Input tags for state,city,pincode).....</div>
+---------------------------------------------------------
+in app.component.html,
+<div class="container-fluid">
+  <h2>Bootcamp Enrollment Form</h2>
+  {{userForm.value | json}}
+  
+  <form #userForm="ngForm">                  //We have used #userForm as the template reference variable, Here the ngForm directive exports itself as the string ngForm and by assigning it to a reference variable we control of the directive itself
+
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" class="form-control" name="name" ngModel>   //To explicitly tell which of the formcontrols to be tracked we have to use ngModel attribute as a marker. And that html element should have a name attribute otherwise it won't work.
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" class="form-control" name="email" ngModel>
+    </div>
+
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="tel" class="form-control" name="phone" ngModel>
+    </div>
+
+    <div class="form-group">
+      <select class="custom-select" name="topic" ngModel>
+        <option selected value="">I am interested in</option>
+        <option *ngFor="let topic of topics">{{ topic }}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label>Time preference</label>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="timePreference" value="morning" ngModel>
+        <label class="form-check-label">Morning (9AM - 12PM)</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="timePreference" value="evening" ngModel>
+        <label class="form-check-label">Evening (5PM - 8PM)</label>
+      </div>
+    </div>
+
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" name="subscribe" ngModel>
+      <label class="form-check-label">
+        Send me promotional offers
+      <label>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</div>
+  </form>
+</div>

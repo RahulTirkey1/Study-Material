@@ -1,0 +1,2 @@
+C:/>python -m venv virtual
+C:/>virtual\Scripts\activate

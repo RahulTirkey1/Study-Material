@@ -1,0 +1,35 @@
+Attribute and properties are not the same.
+Attributes are defined by HTML.
+Properties are defined by DOM.
+Attributes initialize DOM properties and they are done.Attribute values cannot change once they are initialized.
+
+Suppose there's an input element like,
+<input type="text" value="James">           // Here name is a attribute of input tag and a value is assiged.
+Now in console.log,
+$0.getAttribute('value')                   //returns James
+$0.value                                   //returns James
+Now suppose we change the value in the text to "Gosling"
+$0.getAttribute('value')                   //returns James
+$0.value                                   //returns Gosling   //Here the values actually reflects the DOM
+
+In Angular we are doing binding with the DOM not to the HTML elements.
+
+@Component({
+  selector: 'app-test',
+  template: `<div>
+             
+      <input id="{{myId}}" [disabled]="isDisabled"  type="text" value="Vishwas">        //[] is for property binding, we couldn't use interpolation because it works only for strings but we can also encounter situation where we might need boolean values.
+      <input [id]="myId" bind-disabled="isDisabled"  type="text" value="Vishwas">       //But if we want to avoid [] then we can also use bind- to bind properties to HTML elements.
+    </div>
+  `,
+  styles: []
+})
+export class TestComponent implements OnInit {
+
+  public myId = "testId";
+  public isDisabled = true;
+  constructor() { }
+
+  ngOnInit() {
+  }
+}

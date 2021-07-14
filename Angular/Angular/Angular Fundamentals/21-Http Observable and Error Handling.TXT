@@ -1,0 +1,92 @@
+To fetch data from a server we have manually created a file under assets/data
+employees.json,
+[
+    {"id": 1, "name": "Andrew", "age": 30},
+    {"id": 2, "name": "Brandon", "age": 25},
+    {"id": 3, "name": "Christina", "age": 26},
+    {"id": 4, "name": "Elena", "age": 28},
+    {"id": 5, "name": "Felicia", "age": 25}    
+] 
+-----------------------------------
+app.module.ts,
+mport { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
+import { EmployeeService } from './employee.service';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    EmployeeListComponent,
+  ],
+  imports: [
+    
+    BrowserModule,
+    HttpClientModule                     //HttpClientModule is added for Http calls
+  ],
+  providers: [EmployeeService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+------------------------
+
+employee.service.ts,
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { IEmployee } from './employee';
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
+
+@Injectable()
+export class EmployeeService {
+
+  private _url: string = "/assets/data/employees.json";
+
+  constructor(private http:HttpClient) { }
+getEmployees(): Observable<IEmployee[]>{
+    return this.http.get<IEmployee[]>(this._url)         //From get() it will return an observable type but we want the output in Employee Array
+                    .pipe(tap(data => alert(JSON.stringify(data))) , catchError(this.errorHandler));
+  }
+  errorHandler(error: HttpErrorResponse){
+    return observableThrowError(error.message || "Server Error");
+  }
+
+}
+
+----------------------------------
+employee.ts, (This is an interface)
+export interface IEmployee {
+    id: number,
+    name: string,
+    age: number
+} 
+
+----------------------------------
+employee-list.ts,
+@Component({
+  selector: 'employee-list',
+  template: `
+    <h2>Employee List</h2>
+    <h3>{{errorMsg}}</h3>
+    <ul *ngFor="let employee of employees">
+      <li>{{employee.name}}</li>
+    </ul>
+     `,
+  styles: []
+    })
+export class EmployeeListComponent implements OnInit {
+
+  public employees = [];
+  public errorMsg;
+  constructor(private _employeeService: EmployeeService) { }
+
+  ngOnInit() {
+
+    this._employeeService.getEmployees()
+      .subscribe(data => this.employees = data,     //Here we subscribe the data to be rendered.
+                error => this.errorMsg = error);
+  }

@@ -1,0 +1,37 @@
+I->def func(a,b):
+      return sum((a,b))*10              //Input is taken as a tuple
+I->func(10,20)
+O->300
+
+I->def func(a,b,c):
+      return sum((a,b,c))*10 
+I->func(10,20,30)
+O->600
+
+args:-
+---------------------------
+Suppose there are n number of parameters which are not fixed.Then,
+I->def func(*args):            //Here the args is treated as tuple.We can also change the name from args to something else,but * should always be preceded.
+      return sum(args)*10
+I->func(10,20,30)
+O->600
+I->func(10,20,30,40,50)
+O->1500
+
+kwargs:-
+-----------------------------
+It accepts arguments as dictionaries
+I->def func(**kwargs):                    //It accepts arguments as dictionaries
+      return kwargs
+I->func(apple='fruit',carrot='vegetable',pigeon='bird')
+O->{'apple': 'fruit', 'carrot': 'vegetable', 'pigeon': 'bird'}
+
+I->def func(*args,**kwargs):
+      print(args)
+      print(kwargs)
+      print('I would like {} {}'.format(args[0],kwargs['food']))
+   func(10,20,30,apple='fruit',food='samosa')
+O->(10, 20, 30)
+   {'apple': 'fruit', 'food': 'samosa'}
+   I would like 10 samosa
+     

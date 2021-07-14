@@ -1,0 +1,21 @@
+from flask import Flask,redirect,url_for
+app = Flask(__name__)                        //Instantiate Flask
+
+@app.route("/")
+def home():
+	return "Hello <h1>World</h1>"
+
+@app.route("/<name>")              //Here name is just like query string
+def user(name):
+	return f'Hello {name}'	
+
+@app.route("/admin")
+def admin():
+	return redirect(url_for("home"))	      //Used for redirecting,Here we don't type url but the function name itself
+
+@app.route("/admin1")
+def admin1():
+	return redirect(url_for("user",name="Sam"))	
+
+if __name__=="__main__":
+    app.run()

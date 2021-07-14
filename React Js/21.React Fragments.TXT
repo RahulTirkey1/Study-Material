@@ -1,0 +1,59 @@
+We use Fragments to avoid enclosing in div tags.
+
+FragmentDemo.js,
+import React from 'react'
+
+function FragmentDemo() {
+	return (
+		<React.Fragment>
+			<h1>Fragment Demo</h1>
+			<p>This describes the Fragment Demo component</p>
+		</React.Fragment>
+	)
+}
+
+export default FragmentDemo;
+
+------------------------------------------------------------------------------
+Table.js,
+import React from 'react'
+import Columns from './Columns'
+
+function Table() {
+	return (
+		<table>
+			<tbody>
+				<tr>
+					<Columns />
+				</tr>
+			</tbody>
+		</table>
+	)
+}
+
+export default Table;
+
+Columns.js,
+import React from 'react'
+
+function Columns() {
+    
+  const items=[];
+   
+  return (
+    <React.Fragment>
+
+        {
+          items.map(item=>{
+               <React.Fragment key={item.id}>                 //The only attribute allowed in React.fragment is key.
+                <h1>{item.title}</h1>
+               </React.Fragment>
+             })
+              }
+      <td>Name</td>
+      <td>Vishwas</td>
+    </React.Fragment>
+  )
+}
+
+export default Columns

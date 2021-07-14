@@ -1,0 +1,66 @@
+Query Operators
+------------------------
+
+Comparison Operator:-
+1) db.products.find({price:{$eq:30}})             //It means fetch all documents whose price field value=30.
+2) db.products.find({price:{$ne:30}})             //It means fetch all documents whose price field value not equal to 30.
+3) db.products.find({price:{$lt:30}})             //It means fetch all documents whose price field value<30.
+4) db.products.find({price:{$gt:30}})             //It means fetch all documents whose price field value>30.
+5) db.products.find({price:{$lte:30}})             //It means fetch all documents whose price field value<=30.
+6) db.products.find({price:{$gte:30}})             //It means fetch all documents whose price field value>=30.
+7) db.products.find({price:{$in:[30,40]}})             //It means fetch all documents whose price field value=30 or value=40.
+8) db.products.find({price:{$nin:[30,40]}})             //It means fetch all documents whose price field value not equal to 30 or 40.
+For embedded documents,
+C:\>db.products.find({"property.value":{$gt:60}})
+Arrays case,
+C:\>db.products.find({hobbies:["acting"]})           //It can be only in arays case.Will only check acting,if [] brackets are emitted than everything that contains acting as a part of array will be fetched.
+ 
+Logical Operator:-
+1) db.products.find({$or: [{price:{$lt:30}},{price:{$gt:50}}]})             //It means fetch all documents whose price field value<30 or value>50.
+2) db.products.find({$nor: [{price:{$lt:30}},{price:{$gt:50}}]})             //It means fetch all documents who do not satisfy the condition where price field value<30 or value>50.
+3) db.products.find({$and: [{price:{$lt:30}},{type:"soap"}]})             //It means fetch all documents whose price field value>30 and type field value is soap.
+Now there is a trick in $and,
+db.products.find({type:"soap",type:"slimy"})                     //Here MongoDB overwrites type from soap to slimy so we can't fetch that document who has both types of "soap" and slimy".
+db.products.find({$and: [{type:"soap",type:"slimy"}]})           //Here it will check both conditions and fetch only those documents who has both "soap" and "slimy".
+4) db.products.find({price:{$not:{$eq:60}}})                     //Here it fetches those documents whose price is not equal to 60.It is same as comparison operator "ne".
+
+Element Operator:-
+1) db.products.find({manufacturer:{$exists:true,$ne:null}})        //Here it fetches all those documents whose fields have manufacturer and even if it has,the value shouldn't be null.
+2) db.products.find({price:{$type:"number"}})                      //Here it fetches all those documents whose price field is of type number.
+   db.products.find({price:{$type:"double"}})                      //Here it fetches all those documents whose price field is of type double.Even if it has number type,then also it will fetch because Javascript functions it.
+   db.products.find({price:{$type:["number","string"]}})           //Here it fetches all those documents whose price field is of type double or string.
+
+Evaluation Operator:-
+1) db.products.find({description:{$regex:/free/}})                  //It will fetch those documents who in their description field has the word "free".The description can have a sentence but if it finds a word "free" in that sentence then it will be fetched.
+
+db.sales.insertMany([{target:80,volume:89,_id:1},{target:177.volume:200,_id:2},{target:120,volume:100,_id:3}])
+2) db.sales.find({$expr:{$gt:["$volume","$target"]}})            //It fetches those documents which according to the expression if volume is greater than target.
+   db.sales.find({$expr:{$gt:[{$cond:{$if:{$gte:["$volume",190]},then:{$subtract:["$volume",30]},else:"$volume"}},"$target"]}})          //It fetches those documents where volume should be greater than target provided the condition that if volume>=190 then volume=volume-30 else volume will be returned as such to check whether if its greater than target.
+   Here is $ every field of document is written to put it into an expression.
+
+Array Operator:-
+1) db.users.find({"hobbies.title":"Sports"})                        //It fetches those documents which in the field hobbies has an array of embedded documents.Now within that embedded documents if it finds title field with value Sports then it is returned.
+Example:
+{"name":"Max","age":12,"hobbies":[{"title":"Sports","frequency":20},{"title":"Cooking","frequency":30}]}
+2) db.users.find({hobbies:{$size:3}})                              //It fetches those documents where the hobbies field has 3 elements.So hobbies here is an array.
+3) db.products.find({ingredients:{$all:["flour","mustard"]}})     //It fetches those documents in the ingredients field array has values "flour" and "mustard" irrespective of their order of writing. If we had simply passed without $all then if it finds "flour" first then "mustard",then it would have passed the documents.So $all makes it easy that irrespective of the order fetch those documents if it matches the values.
+4) db.users.find({hobbies:{$elemMatch:{title:"Sports",frequency:3}}})   //It fetches those documents where in hobbies array, it has embedded douments,and if one of those documents matches the key-value pair. 
+   
+---------------------------------------------------------------------------------------------------------------------
+Cursor
+-------
+Initially if we write find(), it fetches the first 20 documents and down below it has "it" which is a cursor and if we type it then we get the next 20 documents and so on.
+If we write find().next(), it gives the next document and if we type it again it gives next one and so on.
+If we fetch every document and then type next() then it won't return anything because cursor has been at the last and there is no document left to fetch.
+db.movies.find().sort({rating:1,runtime:-1})                       //Here it means to fetch the documents in sorted manner. Now rating :1 means ascending order and -1 means descending order. Here in the query we passed another parameter in sort runtime: -1,so it sorts in descending order. But the query will be ordered the way we write. So, those rating in ascending order then runtime in descending order. 
+db.movies.find().sort({rating:1,runtime:-1}).skip(100),limit(10)   //From the just above explanation add, it skips the first 100 and limits the fetch to 10 documents.Here the order in which we write the methods don't method.We can write limit first then sort then skip,or any other combination. It will still work the same.
+
+Projection Operator
+-----------------------------
+Suppose a document has many fields but we only want to display some fields only then we can use projections.
+db.products.find({},{name:1,price:1})                          //Here it means that irrespective of many fields a document has it will only print out name,price and id comes by default.To explicitly remove type _id:0 .
+db.movies.find({genres:"Drama"},{genres:{$elemMatch:{$eq:"Horror"}}})       //Here we can use elemMatch in respect to projection.Here only id will be displayed if it found drama in genres array,but if genres array if it finds horror also apart from drama then it will display both id and genres :"Horror" for that document.But if only genres: "Drama" is found then it will only display id(as by default whether mentioned or id always gets fetched until and unless you explicitly mention _id:0).
+db.movies.find({genres:{$all:["Drama","Horror"]}},{"genres.$":1})           //Here genres.$ means that give us the one genre that it found.And it will print out genres :"Horror" but Drama will not be fetched even if it satisfies both Drama and Horror.It is applicable to Arrays only.
+db.movies.find({rating:8},{genres:{$slice:2}})                    //It means fetch those genres from the document whose rating matches 8 and just print the first two genres of the document.
+db.movies.find({rating:8},{genres:{$slice:[1,2]}})                //It means fetch those genres from the document whose rating matches 8 and skip the first(1) genre and print the next two(2) genres.
+ 

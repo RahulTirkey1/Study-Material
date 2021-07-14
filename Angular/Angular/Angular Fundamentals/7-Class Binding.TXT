@@ -1,0 +1,46 @@
+
+
+@Component({
+  selector: 'app-test',
+  template: `<div>
+<h2 class="text-success">Codevolution</h2>                   //We can normally assign this.                
+      <h2 [class]="successClass">Codevolution</h2>           //Assign by property binding
+      <h2 class="text-special" [class]="successClass">Codevolution</h2>            //Suppose, we do normal and property binding. Then property binding wins
+      <h2 [class.text-danger]="hasError">Codevolution</h2>              //Suppose we want to enable a particular class by conditions then this is the syntax.Only demerit can only assign one class.
+      <h2 [ngClass]="messageClasses">Message</h2>                       //We want to enbale multiple classes in a HTML elements
+      
+      
+    </div>
+  `,
+  styles: [`
+    .text-success{
+      color: green;
+    }
+    .text-danger{
+      color: red;
+    }
+    .text-special{
+      font-style: italic;
+    }
+  `]
+})
+export class TestComponent implements OnInit {
+
+  public name = "Codevolution";
+  public url = window.location.href;
+  public myId = "testId";
+  public isDisabled = true;
+  public successClass = "text-success";
+  public hasError = false;
+  public isSpecial = true;
+  public messageClasses = {
+    "text-success": !this.hasError,
+    "text-danger": this.hasError,
+    "text-special": this.isSpecial
+  }
+
+  constructor() { }
+
+  ngOnInit() {
+}
+}

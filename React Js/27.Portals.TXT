@@ -1,0 +1,24 @@
+The concept of portal is to use render the children into the DOM node that exists outside the DOM nodes of the parent component.
+
+Example:-
+----------------
+In public/index.html,            //Not in the src folder.
+<div id="root"></div>            //All the React components are enclosed into this DOM element.
+<div id="portal-root"></div>     //Now we render the element from inside the root and access the portal-root.
+
+In src/components/PortalDemo.js,
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+function PortalDemo() {
+	return ReactDOM.createPortal(
+		<h1>Portals Demo</h1>,
+		document.getElementById('portal-root')
+	)
+}
+
+export default PortalDemo;
+
+The ReactDOM.createPortal(parameter1,parameter2)
+parameter1-JSX
+parameter2-accessing of the element that is not present in the root element.

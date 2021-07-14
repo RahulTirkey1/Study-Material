@@ -1,0 +1,25 @@
+I->def num(x,y)
+       return x+y
+   result=num(10,20)
+   result
+O->30
+I->def name_function()
+     '''
+     DOCSTRING: Information about the function               //To write own documentation
+     INPUT: NO INPUT
+     OUTPUT: HELLO
+     '''
+     print('HELLO')
+I->help(name_function) 
+O->Help on function name_function in module __main__:
+    name_function()
+    DOCSTRING: Information about the function
+    INPUT: NO INPUT
+    OUTPUT: HELLO
+
+I->def say(name='Name'):
+      print('hello '+name)
+   say()
+O->hello Name
+I->say('Jose')
+O->hello Jose

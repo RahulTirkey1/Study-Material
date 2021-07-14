@@ -1,0 +1,72 @@
+Inline Styling
+---------------------
+import React from 'react'
+const heading = {
+  fontSize: '72px',
+  color: 'blue'
+}
+
+function Inline() {
+  return (
+    <div>
+      <h1 style={heading}>Inline</h1>
+    </div>
+  )
+}
+
+export default Inline;
+
+CSS Stylesheets
+-------------------------------
+myStyles.css,
+.primary {
+  color: orange;
+}
+
+.font-xl {
+  font-size: 72px;
+}
+
+StyleSheet.js,
+import React from 'react'
+import './myStyles.css'
+
+function Stylesheet(props) {
+  let className = props.primary ? 'primary' : ''
+  return (
+    <div>
+      <h1 className={`${className} font-xl`}>Stylesheet</h1>
+    </div>
+  )
+}
+
+export default Stylesheet;
+
+CSS Modules
+---------------------------
+appStyles.module.css,
+.success {
+  color: green
+}
+appStyles.css,
+.error {
+  color: red
+}
+
+App.js,
+import React, { Component } from 'react'
+import './appStyles.css'
+import styles from './appStyles.module.css'
+
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <h1 className='error'>Error</h1>
+        <h1 className={styles.success}>Success</h1>
+      </div>
+    )
+  }
+}
+
+export default App 

@@ -1,0 +1,19 @@
+In app.component.ts,
+export class ProgressSpinnerComponent implements OnInit {
+  showSpinner = false;
+  constructor() {}
+
+  ngOnInit() {}
+
+  loadData() {
+    this.showSpinner = true;
+    setTimeout(() => {
+      this.showSpinner = false;
+    }, 5000);
+  }
+}
+
+In app.component.html,
+<mat-progress-spinner color='accent' value='100'></mat-progress-spinner>  //Here change the value from 0 to 100
+<mat-spinner *ngIf='showSpinner'></mat-spinner>
+<button (click)='loadData()'>Load Data</button>

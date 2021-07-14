@@ -1,0 +1,63 @@
+Context provides a way to pass data through the component tree without having to pass props down manually at every level.
+
+components/userContext.js,
+import React from 'react'
+
+const UserContext = React.createContext('codevolution')
+
+const UserProvider = UserContext.Provider
+const UserConsumer = UserContext.Consumer
+
+export { UserProvider, UserConsumer }
+export default UserContext
+
+In app.js,
+<div className="root>
+  <UserProvider value="Rahul">
+        <ComponentC />
+  </UserProvider>
+</div>
+
+In components/componentC.js,
+xport class ComponentC extends Component {
+	render() {
+		return (
+			<div>
+				<ComponentE />
+			</div>
+		)
+	}
+}
+
+export default ComponentC
+
+In components/componentE.js,
+export class ComponentE extends Component {
+
+   static contextType=UserContext
+	render() {
+		return (
+			<div>
+                                {this.context}                                   //displays Rahul .This is another way of approaching,but only restriction is that only one element could be sent.
+				<ComponentF />
+			</div>
+		)
+	}
+}
+
+export default ComponentE
+
+In components/ComponentF.js,
+export class ComponentF extends Component {
+	render() {
+		return (
+			<UserConsumer>
+				{username => {
+					return <div>Hello {username}</div>        //displays Rahul
+				}}
+			</UserConsumer>
+		)
+	}
+}
+
+export default ComponentF

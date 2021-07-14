@@ -1,0 +1,44 @@
+class Customer 
+{
+    private _firstName: string;
+    private _lastName: string;
+    constructor(theFirst: string, theLast: string) 
+    {
+        this._firstName = theFirst;
+        this._lastName = theLast;
+    }
+
+    public get firstName(): string {
+        return this._firstName;
+    }
+
+    public set firstName(value: string) {
+        this._firstName = value;
+    }
+
+    public get lastName(): string {
+        return this._lastName;
+    }
+    public set lastName(value: string) {
+        this._lastName = value;
+    }
+    
+}
+
+// let's create an instance
+let myCustomer = new Customer("Martin", "Dixon");
+
+myCustomer.firstName = "Susan";    //It intrenally calls set accessors for firstname.It does everything internally.It sets the value
+myCustomer.lastName = "Public";
+console.log(myCustomer.firstName);  //It internally calls get accessors for lastname.It gets the value.
+console.log(myCustomer.lastName);
+
+******But there is an issue, it only supports ES5 or above syntax, so we have to explicitly write,
+C:/>tsc --target ES5 --noEmitOnError Customer.ts   //to generate the proper Customer.js file.
+
+****Here we can see we have to write many config like targetES5,noEmitOnError so,we can write that into a separate file.It can be initially created by,
+C:\>tsc --init
+
+Now just type,
+C:\>tsc            //It will compile all the .ts file aligned and property set that we have on tsconfig.ts file(It basically has the target noEmitOnError commands).
+

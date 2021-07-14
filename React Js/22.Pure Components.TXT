@@ -1,0 +1,100 @@
+A regular component does not implement the shouldComponentUpdate method. It always return true by default.
+
+A pure component implements shouldComponentUpdate with a shallow props and state comparison.
+Shallow Comparison(SC):-
+---------------------
+Primitive Types-a (SC) b returns true if a and b have the same value and are of the same type.
+Complex Types-a (SC) b returns true if a and b reference the exact same object.
+
+So in Pure Component, the component is not re-rendered because of shallow checks and hence therefore performance boost.
+
+It is a good idea to ensure that all the children components are pure to avoid unexpected behaviour.
+When using PureComponents never mutate a state. Always return a new state.
+
+ParentComponent.js,
+import React, { Component, Pure } from 'react'
+import RegComp from './RegComp'
+import PureComp from './PureComp'
+import MemoComp from './MemoComp'
+
+class ParentComp extends Component {
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			name: 'Vishwas'
+		}
+	}
+
+	componentDidMount() {
+		setInterval(() => {
+			this.setState({
+				name: 'Vishwas'
+			})
+		}, 2000)
+	}
+
+	render() {
+		console.log('*********Parent Comp render************')
+		return (
+			<div>
+                                <RegComp name={this.state.name} />
+				<PureComp name={this.state.name} />
+			
+			</div>
+		)
+	}
+}
+
+export default ParentComp;
+
+PureComp.js,
+import React, { PureComponent } from 'react'
+
+class PureComp extends PureComponent {
+  render() {
+    console.log('Pure Comp render')
+    return (
+      <div>
+        Pure Component {this.props.name}
+      </div>
+    )
+  }
+}
+
+export default PureComp;
+
+RegComp.js,
+import React, { Component } from 'react'
+
+class RegComp extends Component {
+  render() {
+    console.log('Regular Comp render')
+    return (
+      <div>
+        Regular Component {this.props.name}
+      </div>
+    )
+  }
+}
+
+export default RegComp;
+
+Output in console,
+*********Parent Comp render************
+Regular Comp render
+Pure Comp render                                     //PureComponent doesn't re-render due to no change in the state reference and value whereas RegComponent always re-renders
+*********Parent Comp render************             after 2 seconds
+Regular Comp render
+*********Parent Comp render************             after 2 seconds
+Regular Comp render
+*********Parent Comp render************             after 2 seconds
+Regular Comp render
+*********Parent Comp render************             after 2 seconds
+Regular Comp render
+.
+.
+.
+.
+.
+infinite times

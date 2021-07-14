@@ -1,0 +1,36 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-test',
+  template: `
+    <div>
+      
+      <input #myInput type="text">                                     // #myInput is used to give the reference. And in this example, we pass in the button element.                           
+      <button (click)="logMessage(myInput.value)">Log</button>         //So whenever a click is triggered then it will call logMessage handler in class component and pass the argument value. So, in the console, it print the text in the input element each type,the button is clicked.   
+      
+    </div>
+  `,
+  styles: [`
+    .text-success{
+      color: green;
+    }
+    .text-danger{
+      color: red;
+    }
+    .text-special{
+      font-style: italic;
+    }
+  `]
+})
+export class TestComponent implements OnInit 
+{  
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  logMessage(value){
+    console.log(value)
+  }
+
+}

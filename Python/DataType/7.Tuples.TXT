@@ -1,0 +1,8 @@
+->In Python, Tuples are very similar to lists.However they are immutable.Tuples use parenthesis like (1,2,3)
+
+I-> t=(1,2,3)
+I-> t=('a','a','b')
+I-> t.count('a')
+O-> 2
+I-> t.index('a')
+O-> 0                 //Returns first index where it is found     

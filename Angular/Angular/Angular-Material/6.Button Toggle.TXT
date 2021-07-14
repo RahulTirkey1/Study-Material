@@ -1,0 +1,21 @@
+<div>
+  <mat-button-toggle #toggleBtn checked disableRipple>Toggle</mat-button-toggle>
+  {{ toggleBtn.checked }}
+</div>
+<div>
+  <mat-button-toggle-group multiple #toggleGroup="matButtonToggleGroup">
+    <mat-button-toggle value="angular">Angular</mat-button-toggle>
+    <mat-button-toggle value="react">React</mat-button-toggle>
+    <mat-button-toggle value="vue">Vue</mat-button-toggle>
+  </mat-button-toggle-group>
+  {{toggleGroup.value}}
+</div>
+Only single value can be selected if we remove multiple so it will add like a radio-button instead of checkbox
+<div>
+  <mat-button-toggle-group #toggleGrou="matButtonToggleGroup">
+    <mat-button-toggle value="angular">Angular</mat-button-toggle>
+    <mat-button-toggle value="react">React</mat-button-toggle>
+    <mat-button-toggle value="vue">Vue</mat-button-toggle>
+  </mat-button-toggle-group>
+  {{toggleGrou.value}}
+</div>

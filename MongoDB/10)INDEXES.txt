@@ -1,0 +1,94 @@
+Indexes are used to speed up CRUD operations.
+Now Indexes are created so that a particular field in a document is created to search and do query upon that field only.And these indexes actually point to the actual documents.These indexes are arranged either in ascending or descending order to search to documents effectively.
+The purpose of this is not scan through the entire collection but search a particular index(field) and if found point that to the actual document in the collection. If the collection size contains enormous document that can be beneficial otherwise collectionscan is best.
+
+Suppose we have a collection named Persons of 5000 documents.
+Now to find all the document which has age>60
+C:\>db.Persons.find({age:{$gt:60}})                  
+C:\>db.Persons.explain().find({age:{$gt:60}})                  //Here a special method explain() is given to describe how the search was done, the process of how and number of documents searched.Here in these case it did CollectionScanning.
+
+Suppose we create a index,
+C:\>db.Persons.createIndex({age:1})                          //Here 1 defines the age index to be arranged in ascending order. -1 is for descending.
+C:\>db.Persons.explain().find({age:{$gt:60}})                //Now it will show that it did Index Scan and also the execution time will be less than the CollectionScan.
+IndexScan doesn't return document but return keys and pointers to the documents.
+
+db.Persons.dropIndex({age:1})                 //To drop the index
+
+Whenever we filter something by index and if that element doesn't exist then it decreases the performance as it first creates the index and then filters it. So,there will be time loss.
+
+Compound Indexes:-
+C:\>db.Person.createIndex({age:1,gender:1})              //It created a compund index which has both age and gender.The order of the query matters. If we find by age and gender in the same order it will take Index scan.If we only find age then also Index Scan.But, for only gender it will do collectionscan.
+C:\>db.Person.find({age:50}}.sort({gender:1})            //If the above index was created then it will also done by Index Scan.
+Suppose if we have millions of data and we want to sort it then due to complexity and time the process will run out.So using index sort is better suited at that time,because at index only the fields will be sorted.
+
+C:\>db.Person.getIndexes()                                //To check all the indexes created.
+By default MongoDB will create _id field index.
+
+C:\>db.Person.createIndex({email:1},{unique:true})        //Here we can ensure that we have unique indexes by second parameter checking unique:true. By deafult _id has unique id but if we want to ensure some other fields with unique indexes then we can pass the above query with the required field.
+
+Partial Index:-
+C:\>db.Person.createIndex({age:1},{partialFilterExpression:{gender:"male"}})       //It is used for narrowing down the index.Also applicable to Compound Index.
+C:\>db.Person.explain().find({age:{$gt:60}})                        //Here in this query MongoDB will perform CollectionScan as we didn't mention gender in the query.So the above index will not be scanned here as some data maybe lost as we only demanded age>60 and didn't mention the gender.
+C:\>db.Person.explain().find({age:{$gt:60},gender:"male"})          //Here index scan will be performed and we can see that we have narrowed down our results.
+
+Suppose we have a collection in which three documents are present.1st document has a name and email field.Second document has only name field.Now if we create a index using email and in the 2nd argument put unique:true then it will take 2nd document as non existant field email as unique.
+If we try to create a new document within the same collection with only name field then MongoDB will throw a duplicate key error as the 2nd document in the collection also didn't had email field. So,it would create a problem.Now how to ensure that unique fields are set without two or more documents if not containing the field.
+C:\>db.Model.createIndex({email:1},{unique:true,{partialFilterExpression:{email:{$exists:true}}}})          //It creates unique key only for those documents containing email fields.
+
+Time-To-Live(TTL) Index:-
+C:\>db.Product.insertOne({name:"Raj",created:new Date()})
+C:\>db.Product.createIndex({created:1},{expireAfterSeconds:20})          //In the 2nd argument we have give expireAfterSeconds keyword,it can be used only for date&time field. It cannot be used for any other field.Now due to parameters passed we can expect the first document to be deleted after 20 seconds.But it won't behave like that.
+C:\>db.Product.insertOne({name:"Mahesh",created:new Date()})             //Now after creating the index with expireAfterSeconds in 2nd agrument then the index will be triggered and after 20 seconds it will delete both the documents.
+
+Query Diagnosis & Query Planning:-
+-----------------------------------
+Now when we write explain(), we expect to find out the details and description of the queries.
+So,if we pass explain("queryPlanner"),it shows summary for ExecutedQuery+Winning Plan
+So,if we pass explain("executionStats"),it shows summary for ExecutedQuery+Winning Plan+Possible Rejected Plans
+So,if we pass explain("allPlansExecution"),it shows summary for ExecutedQuery+Winning Plan+Winning Plan Decision Process.
+
+Rejecting a Plan:-
+C:\>db.Product.createIndex({name:1})
+C:\>db.Product.createIndex({name:1,age:1})
+C:\>db.Product.explain().find({name:"Max",age:30})        //So here MongoDB takes the 2nd index as the winning plan and the 1st index as the rejected plan. MongoDB firstly checks which approach is the fastest and stores the winning plan into the cache for next similar kind of find() queries.This cache is removed after 1000 operations or if the Server is restarted or if a new index is added. So it agains formulates and decides the winning plan and stores the plan in the cache.
+
+Multi-Key Indexes:-
+------------------------
+C:\>db.User.insertMany([{name:"John",hobbies:["playing","swimming"],address:[{title:"Permanent"},{title:"Present"}]},{name:"John",hobbies:["Reading","swimming"],address:[{title:"Permanent"},{title:"Office"}]}])
+C:\>db.User.createIndex({hobbies:1})
+C:\>db.User.explain().find({hobbies:"swimming"})             //Now here in this case, IndexScan is used. But here there is multikey because the element used to create an index is an array.So here MongoDB pulls out all the multi keys and separates the index.Suppose 4 elements in the array and 10 documents recorded means 40 elements.
+
+C:\>db.User.createIndex({address:1})
+C:\>db.User.explain().find({"address.title":Office})        //Here collectionScan will be used because it doesn't check whole document, it just checks the title that matches Office.
+C:\>db.User.explain().find({address:{title:"Office"}})      //Here IndexScan is used because the whole document is checked for title:Office .And multikey is generated.
+
+Now if we created a compound index of one normal field and one array then it will register that index.
+But if we create a compound index of multiple arrays then it will throw cannot Index parrallel arrays error.Because the combination of two or more arrays will generate many keys and that leads to performance issues.
+Having a multikey is a complex thing.It can cause performance loss if more number of keys will be generated and separate elements field have to created for it.
+
+Text Index:-
+Suppose a document has a description field and it's value is a String basically.So MongoDB will store this as an array of single words and store in such.It will store like keyword.The common words like are mostly emiited.For example:- a,an,this,we etc.,
+C:\>db.Product.createIndex({description:"text"})            //This is a special kind of index where MongoDB stores all the important keywords apart from the common words like a,an,etc.
+C:\>db.Product.find({$text:{$search:"home"}})               //It fetches the document where in description field has the word home.
+C:\>db.Product.find({$text:{$search:"Good Morning"}})               //It fetches the document where in description field has the word Good and Morning. Both are treated differently.So if some document has good in their description then also it will fetch. It doesn't has to be both words simultaneously.
+C:\>db.Product.find({$text:{$search:"\"Good Morning\""}})           //Now it will only fetch those documents which has both the words.
+This is much faster and powerful than Regular expressions.
+C:\>db.Product.find({$text:{$search:"Good Morning"}},{$score:{$meta:"textScore"}})           //Here the $meta actually puts the score of the both the words found.So if a document has only one of the word it gets a low score and a document with both the words presents gets a high score.It is also fetched accordingly.
+C:\>db.Product.find({$text:{$search:"Good Morning"}},{$score:{$meta:"textScore"}}).sort($score:{$meta:"textScore"})           //To absolutely make sure it gets sorted by text Score.
+
+To create a text indexes with two or more fields is not possible doing individually.So we must create only one index combining two or more fields which will be text Index.Firstly delete the previous text index and create a new one combining two or more fields.
+C:\>db.Product.createIndex({title:"text",description:"text"})
+C:\>db.Product.findOne()                              //Shows the first document which a word present in both the fields text and description.
+C:\>db.Product.find({$text:{$search:"Flow"}})         //Fetches the document which conatins this word.
+
+C:\>db.Product.find({$text:{$search:"Flow -River"}})  //So this actually tells that fetch those document which contain the word "Flow" but also excludes the word "River".
+
+Adding weights to indexes to get the desired textScore and therefore the preference.
+C:\>db.Product.createIndex({title:"text",description:"text"},{weights:{title:1,description:5}})       //Giving the weights to help find the prefernce by more textScore if the text has description matching as it's weight is more than title.
+C:\>db.Product.find({$text:{$search:"River",$caseSensitive:true}})                  //By default caseSensitive always remains false, so to make it set to true we have to manually do it.
+
+We performed most of the indexes practice in foreground where it was operating faster, but in case of production environment where billions of data are operated we work indexes in the background.
+Because whenever we deal with indexes, it pauses other operations until the index is created. So with billions of data, the creation of index will stop other operation and that is not fit for production environment.
+C:\>db.Product.createIndex({age:1},{background:true})           //By default bakground is false that means it runs on the foreground. By setting it to true that means it will run in the background and other operations like create,find,update or delete can also be performed at that instant.
+
+

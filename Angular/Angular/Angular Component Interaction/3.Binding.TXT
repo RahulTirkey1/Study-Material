@@ -1,0 +1,25 @@
+In app.component.ts,
+export class AppComponent {
+  pageTitle = 'Angular Component Interaction';
+  imgUrl = 'https://picsum.photos/200';
+  count = 0;
+  name: string;
+
+  incrementCounter() {
+    this.count += 1;
+  }
+}
+
+In app.component.html,
+<h1>{{ pageTitle }}</h1>
+<div>
+  <img [src]="imgUrl" alt="Image">
+</div>
+<div>
+  <button (click)='incrementCounter()'>Click</button>
+  <p>Clicked {{ count }} times</p>
+</div>
+<div>
+  <input type="text" [(ngModel)]='name'>
+  <p>Welcome {{ name }}</p>
+</div>

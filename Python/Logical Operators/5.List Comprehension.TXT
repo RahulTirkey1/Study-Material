@@ -1,0 +1,16 @@
+I->mylist='hello'
+I->mylist1=[i for i in mylist]
+I->mylist1
+O->['h','e','l','l','o']
+I->mylist2=[i**2 for i in range(0,5)]
+   mylist2
+O->[0,1,4,9,16]
+I->mylist3=[i**2 for i in range(0,11) if i%2==0]     //If condition
+   mylist2
+O->[0,4,16,36,64,100]
+I->result=[x if x%2==0 else 'ODD' for x in range(0,11)]       //If else condition, the order is reversed.
+I->result
+O->[0, 'ODD', 2, 'ODD', 4, 'ODD', 6, 'ODD', 8, 'ODD', 10]
+I->result1=[x*y for x in [2,4,6] for y in [1,10,100]]     //Nested loop is also possible
+I->result
+O->[2,20,200,4,40,400,6,60,600]

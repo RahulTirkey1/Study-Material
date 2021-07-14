@@ -1,0 +1,7 @@
+a=5
+I-> type(a)
+O-> int
+
+a=8.6
+I-> type(a)
+O-> float

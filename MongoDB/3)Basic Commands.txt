@@ -1,0 +1,90 @@
+After starting the server type,
+C:\>mongo        //It will open the mongo shell, where we can do the db operations.
+
+C:\>show dbs    //It is used to check the databases.
+
+To use a new or existing db,type command,
+C:\>use shop         //If shop is present,it will switch to that database,if not present it will create and switch to it.
+
+To drop a database,
+C:\>db.dropDatabase()          //It should be done after you switch to a database.
+
+To drop a collection,
+C:\>db.products.drop()
+
+Now to create a collection and insert an item,
+C:\>db.products.insertOne({name:"A beautiful place",price:345})       //Here db refers to the current database "shop", products is the collection that will be created if it doesn't exist, and insertOne() is a function where we pass the document to be persisted in the DB.
+If successful, then it will return acknowledged:true and insertId:ObjectId("random id")  //which will be totally unique.
+
+To show the collection and its documents,
+C:\>db.products.find()
+
+To do the above thing in a nice way,we can do
+C:\>db.products.find().pretty()
+
+To change the port number of the server,
+C:/>mongod --port 27108             //the default port is 27017
+As port is changed so,we also have connect the shell by
+C:/>mongo --port 27018
+
+We can also have our own unique id,instead of object id which the mongo automatically generates,
+C:\>db.products.insertOne({name:"Cake",brand:"Mongnis",_id:"cake001"})      //Here the id will be named cake001,
+We can verify by checking the collections useing db.products.find()
+
+To delete a document from a collection,
+C:\>db.products.deleteOne({name:"Cake"})       //It deletes the document which matches the key pair-value.
+
+To update a document to a collection,
+C:\>db.products.updateOne({name:"Computer"},{$set:{warranty:"2 Yrs"}}) // Here the 1st parameter is to find which one to update, and second parameter is update which field in that particular document.
+
+To update every document,we can write like this,
+C:\>db.products.updateMany({},{$set:{warranty:"2 Yrs"}})       //Here 1st parameter is empty that means,every document within that collection should be updated.
+
+To delete multiple elements,
+C:\>db.products.deleteMany({warranty:"2 Yrs"})          //Deletes all collection which has the same key value-pair.
+
+To insert multiple documents in a collection,
+C:\>db.products.insertMany([{name:"Toy",price:200,description:"New edition"},{name:"Glass",price:30,plate:"Aluminium blade",company:"Milton"}])     //Here to insert multiple documents,we add a array of documents.
+
+To find a particular document,
+C:\>db.products.find({warranty:"2 Yrs"})
+
+Suppose,we have many documents and we want to find which is greater than some particular value,
+C:\>db.products.find({price: {$gt: 100}})                //Displays all the document whose price property is greater than 100.
+
+Consider the above command,but if we want only one document to display whose price is greater than 100,then
+C:\>db.products.findOne({price: {$gt: 100}})               //It displays the first document encountered which satisfies the condition
+
+What happens if we simply use update() instead of updateOne() and updateMany()
+C:\>db.products.update({name:"Book"},{price:500})      //Here instead of concatenating, it replaces all the properties and only puts price key value-pair. The name or other key value-pair are all removed.So beware of this method of updating.
+
+Instead of doing the above method,if we want to replace then prefer replaceOne() instead of update()
+C:\>db.products.replaceOne({name:"Book"},{price:500,brand:"Hardy Publication",name:"Book"})
+
+Suppose,we have million documents in a collection,and writing find() won't display all the documents,it displays first 20 documents,and at the bottom it gives cursor object named "it".
+if we write "it",it displays the net set of documents.It works just like pagination. Now to display every element,we type,
+C:\>db.products.find().toArray()
+
+Above can be done by also forEach(),
+C:\>db.products.find().forEach((document)=>printjson(document))    //Displays every record.
+
+We don't use pretty() incase of findOne() and findMany() because, these methods don't give the cursor but the cursor object.
+If we try then it will throw an error. That's why we always use pretty() when we use find().
+
+Projection:-If we want to read only the specific key value-pairs not every key value-pair.Then we can use projection.
+C:\>db.products.find({},{name:1,})      //Here the shell retrieves only the id(by default) and name key value-pair. The key which are not mentioned will not be retrieved. 1 means show,0 means don't show.It is like a switch.
+Here we only gave key name but we will also get id along with it by default.To avoid it,we have to explicitly write,
+C:\>db.products.find({}.{name:1,_id:0}
+
+Embedded Document:- Each document can contain multiple documents within that same document. We can say child documents inside the parent documents.
+C:\>db.products.insertOne({name:"Ice-Cream",price:20,brand:"Cornetto",specification:{purchase:"Limited only",manufacturer:{parent:"North Carolina",rawproducts:"West Virginia"}},retail:"ABC International"})
+
+We can also have arrays in documents or nested documents,
+C:\>db.products.insertOne({name:"Contra",price:1000,played:["X-Box","ps2","ps3"]})
+C:\>db.products.insertOne({name:"Pattis",price:15,eatable:{taste:["Crispy","Chilly","Crunchy"],type:["Potato","Vegetable","Chicken","Egg"]},details:{imported:"Bihar",exported:"Rest Of India"}})
+
+We can retrieve a specific data by,
+C:\>db.products.findOne({name:"Contra"}).played        //It displays the array of field played
+C:\db.products.findOne({"details.imported":"Bihar"})   //It displays that document, which has details field inside whose nested document has "imported" key and value is "Bihar".
+
+

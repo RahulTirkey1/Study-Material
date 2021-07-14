@@ -1,0 +1,174 @@
+React LifeCycle Methods:-
+--------------------------------------
+1)Mounting-When an instance of a component is being created and inserted into the DOM.
+2)Updating-When a component is being re-rendered as a result of changes to either its props or state.
+3)Unmounting-When a component is being removed from the DOM.
+4)Error Handling-When there is an error during rendering, in a lifecycle method,or in the constructor of any child component.
+
+Mounting Phase,
+----------------------------
+1)constructor()- A special function that will get called whenever a new component is created.
+  It is helpful in initializing state and binding the event handlers.We shouldn't make HTTP requests.
+  In constructor we can directly override this.state. In other functions we can only change by this.setState
+
+2)static getDerivedStateFromProps(props,state)-When the state of the component depends on the change of props over time.
+  Since it is a static method, it doesn't have access to this keyword. So trying this.setState won't work. We can return the new object that represents the new object.
+  No Http requests should be made here.
+
+3)render()-It is the only required method in a class component. It reads props and state and returns JSX.It is pure function so for the given state and props it will return the same UI.
+  We shouldn't change the state or interact with the DOM or make AJAX calls.
+  Here the children component lifecycle methods are also executed.
+
+4)componentDidMount()-It will be called only once during the whole lifecycle of the given method. It is invoked immediately after a children and all its children components have been rendered into the DOM.
+  It is the perfect place to interact with the DOM and make http requests.
+
+Updating,
+-----------------
+1)static getDerivedStateFromProps(props,state)-Method is called everytime a component is re-rendered.
+
+2)shouldComponentUpdate(nextProps,nextState)-It dictates whether the component should re-render or not.By default all component should re-render when the state or props changes.This method can prevent the default behaviour.
+  It can compare the existing state and props values with the new state and props value and return True or False to let React know whether the component should update or not.
+  It is good for performance optimization. We should avoid making ajax requests and setState method. This method is classified as rarely used lifecycle method.
+
+3)render()
+
+4)getSnapshotBeforeUpdate(prevProps,prevState)-It accepts previous state and props from its parameters and called right before the changes from the virtual DOM are to be affected in the DOM.
+  It is also a rarely used method. It is used to capture some information from the DOM. 
+  This method will either return null or return a value.Returned value will be passed as the third parameter to the next method.
+
+5)componentDidUpdate(prevProps,prevState,snapshot)-This method is called after the render is finished in the re-render cycles. This method is guranteed to be called once after each re-render cycle.So we can make ajax requests.
+  But before making the call we should compare previous calls(state,props) with new calls(state,props) to avoid unnecessary ajax requests
+
+Unmounting,
+---------------------
+1)componentWillUnmount()-This method is invoked immediately before a component is unmounted and destroyed.We can cancel any network requests,removing event handlers,cancelling any subscriptions and also invalidating timers.
+  Here we shouldn't call the setState method
+
+Error Handling,
+---------------------
+1)static getDerivedStateFromError(error)-When there is an error either during rerendering, in a lifecycle method, or in the constructor of any child component.
+2)componentDidCatch(error,info)
+
+Program
+-------------------------------------
+LifeCycleA.js,
+import React, { Component } from 'react'
+import LifecycleB from './LifecycleB'
+
+class LifecycleA extends Component {
+	constructor(props) {
+		super(props)
+		this.state = {
+			name: 'Vishwas'
+		}
+		console.log('LifecycleA constructor')
+	}
+
+	static getDerivedStateFromProps(props, state) {
+		console.log('LifecycleA getDerivedStateFromProps')
+		return null
+	}
+
+	componentDidMount() {
+		console.log('LifecycleA componentDidMount')
+	}
+
+	shouldComponentUpdate() {
+		console.log('LifecycleA shouldComponentUpdate')
+		return true
+	}
+
+	getSnapshotBeforeUpdate(prevProps, prevState) {
+		console.log('LifecycleA getSnapshotBeforeUpdate')
+    return null
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		console.log('LifecycleA componentDidUpdate')
+	}
+
+	changeState = () => {
+		this.setState({
+			name: 'Codevolution'
+		})
+	}
+
+	render() {
+		console.log('LifecycleA render')
+		return (
+			<div>
+				<button onClick={this.changeState}>Change state</button>
+				LifecycleA<LifecycleB />
+			</div>
+		)
+	}
+}
+
+export default LifecycleA;
+
+LifeCycleB.js,
+import React, { Component } from 'react'
+
+class LifecycleB extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      name: 'Vishwas'
+    }
+    console.log('LifecycleB constructor')
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('LifecycleB getDerivedStateFromProps')
+    return null
+  }
+
+  componentDidMount() {
+    console.log('LifecycleB componentDidMount')
+  }
+
+  shouldComponentUpdate() {
+    console.log('LifecycleB shouldComponentUpdate')
+		return true
+	}
+
+	getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log('LifecycleB getSnapshotBeforeUpdate')
+    return null
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		console.log('LifecycleB componentDidUpdate')
+	}
+
+  render() {
+    console.log('LifecycleB render')
+    return (
+      <div>
+        LifecycleB
+      </div>
+    )
+  }
+}
+
+export default LifecycleB;
+
+Output:-
+LifecycleA constructor
+LifecycleA getDerivedStateFromProps
+LifecycleA shouldComponentUpdate
+LifecycleA
+LifecycleB constructor
+LifecycleB getDerivedStateFromProps
+LifecycleB shouldComponentUpdate
+LifecycleB
+LifecycleB getSnapshotBeforeUpdate
+LifecycleA getSnapshotBeforeUpdate
+LifecycleB componentDidUpdate
+LifecycleA componentDidUpdate
+LifecycleB componentDidMount
+LifecycleA componentDidMount
+
+
+

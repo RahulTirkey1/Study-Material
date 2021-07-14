@@ -1,0 +1,36 @@
+A class can either implement Runnable Interface or extend Thread class.
+
+Example for Runnable:-
+class Work implements Runnable
+{
+@Override
+public void run()
+{
+//Some code
+}
+}
+class MainWork
+{
+psvm(String args[])
+{
+Thread t1=new Thread(new Work());
+t1.start();
+}}
+
+Example for Thread:-
+class Work extends Thread
+{
+@Override
+public void run()
+{//Some code
+}
+class MainWork
+{
+psvm(String args[])
+{
+Work t1=new Work();
+t1.start();
+}}
+
+t1 is a separate thread but the main thread will execute the other tasks.To wait for the thread t1 to die,we have
+call t1.join() .This will join with the main thread.

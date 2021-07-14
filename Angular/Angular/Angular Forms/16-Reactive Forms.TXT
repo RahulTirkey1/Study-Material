@@ -1,0 +1,7 @@
+1.Code and the logic resides in the component class.
+2.No two way Binding.
+3.Well suited for complex classes.
+4.Dynamic Form Fields
+4.Custom Validation
+5.Dynamic Validation
+6.Unit Test is possible as logic is present in Typescript classes. 

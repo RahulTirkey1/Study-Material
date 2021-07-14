@@ -1,0 +1,18 @@
+1)db.persons.aggregrate([{$match:{gender:'female'}}]);           //Retrieves the those documents which has property gender=female
+2)db.persons.aggregrate([{$match:{gender:'female'}},
+                         {$group:{_id:{state:"$location.state"},totalPersons:{$sum:1}}]);        //The output here would be as belows and totalPersons will be counted each time it encounters from a particular state
+                                                                                                 //All have the property of gender=female
+Output:-
+{"_id":{"state":"tayside"},"totalPersons:1}
+...
+{"_id":{"state":"riverside"},"totalPersons:4}
+
+3)db.persons.aggregrate([{$match:{gender:'female'}},
+                         {$group:{_id:{state:"$location.state"},totalPersons:{$sum:1}},
+                         {$sort:{totalPersons:-1}}]);                      //It sorts the passed output of the 2nd aggregrate i.e group in this case, -1 denotes descending and 1 denotes ascending and by default it stays ascending.
+
+Output:-
+{"_id":{"state":"riverside"},"totalPersons:4}
+...
+{"_id":{"state":"tayside"},"totalPersons:1}
+

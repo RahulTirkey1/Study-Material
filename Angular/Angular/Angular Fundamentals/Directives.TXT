@@ -1,0 +1,4 @@
+There are three types of Directives:-
+1)Structural
+2)Attribute
+3)Component

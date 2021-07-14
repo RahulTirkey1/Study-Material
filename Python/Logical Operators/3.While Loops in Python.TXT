@@ -1,0 +1,18 @@
+Syntax:-
+----------
+while some_condition:
+   #execute_something
+
+
+We can also use else in while loop,
+while some_condition:
+   #execute_something
+else:
+   #execute_something_else
+
+We can use break,continue and pass statements in our loops to add additional functionality.
+break: Breaks out of the current closest enclosing loop
+continue: Goes to top of the closest enclosing loop
+pass: Does Nothing at all
+
+  

@@ -1,0 +1,93 @@
+Suppose, we want to fillup the forms from the class without filling up manually from HTML. This is a case scenario if we fetch the values from an API.
+
+1)setValue-We msut fill up all the formControl orelse it will throw an error. That's the only limitation.
+
+app.component.ts,
+import { Component } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'app';
+  registrationForm = new FormGroup({                  //Model for storing values from template to classes.
+    userName: new FormControl('Vishwas'),
+    password: new FormControl(''),
+    confirmPassword: new FormControl(''),
+    address: new FormGroup({
+      city: new FormControl(''),
+      state: new FormControl(''),
+      postalCode: new FormControl('')
+     }) 
+  });
+}loadAPIData() {
+    this.registrationForm.setValue({          //Here we fillup all the formControl
+      userName: 'Bruce',
+      password: 'test',
+      confirmPassword: 'test',
+      address: {
+        city: 'City',
+        state: 'State',
+        postalCode: '123456'
+      }
+    });
+  }
+}
+---------------------------------------------------------------
+app.component.html,
+<div class="container-fluid">
+  <h2>Registration Form</h2>
+
+  <form [formGroup]="registrationForm">
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" formControlName="userName"  class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" formControlName="password"  class="form-control">
+    </div>
+
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" formControlName="confirmPassword"  class="form-control">
+    </div>
+   
+    <div formGroupName="address">
+
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" formControlName="city" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>State</label>
+        <input type="text" formControlName="state" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Postal Code</label>
+        <input type="text" formControlName="postalCode" class="form-control">
+      </div>
+
+  <button class="btn btn-primary" type="submit">Register</button>
+  <button (click)="loadAPIData()" class="btn btn-secondary ml-2" type="button">Load API Data</button>    //If we click this all the data will be automatically filled up.
+
+  </form>
+</div>
+
+
+-------------------------------------------------------------------
+2)patchValue- If we only want to fillup some of the formControls not all formControls then this approach is correct.
+
+From app.component.ts,
+ loadAPIData() {
+   this.registrationForm.patchValue({
+      userName: 'Bruce',
+      password: 'test'
+     });
+ }

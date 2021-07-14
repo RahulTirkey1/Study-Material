@@ -1,0 +1,22 @@
+To override some of the methods provided by python itself,
+I->class Book():
+        def __init__(self,page,author,name):
+             self.page=page
+             self.author=author
+	     self.name=name
+        def __str__(self)
+            return f'The author is {self.author}'
+        def __len__(self)
+            return self.page
+        def __del__(self)
+            return 'Book deleted successfuly'
+I->hk=Book(200,'Rollins','Carpet')
+I->print(hk)
+O->The author is Rollins
+I->str(hk)
+O->The author is Rollins
+I->len(hk)
+O->200
+I->del(hk)
+O->Book Deleted successfully
+

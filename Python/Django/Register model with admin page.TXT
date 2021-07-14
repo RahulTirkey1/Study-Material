@@ -1,0 +1,7 @@
+First import the model 
+
+Ex:-
+from .models import Post
+
+Then,
+admin.site.register(Post)                       //Here Post is the model name

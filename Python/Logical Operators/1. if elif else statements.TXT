@@ -1,0 +1,25 @@
+->In Python we control the flow of logic through
+   if
+   elif
+   else
+->Control flow statements make use of colons and indentations
+
+Syntax of if statement,
+if some_condition :
+  #execute_statements
+
+Syntax of if/else statement,
+if some_condition:
+  #execute_statements
+else:
+  #do_something_else
+
+Syntax of if/elif/else statement,
+if some_condition:
+  #execute_statements
+elif some_other_condition:
+  #execute_something_different
+else:
+  #do_something_else
+
+

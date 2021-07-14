@@ -1,0 +1,47 @@
+In interpolation, We can bind data from the class to the templates, so we can evaluate any property or an expression.However we cannot perform assignments 
+or call global Javascript variables.
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-test',
+  template: `
+    <div>
+      
+      <h2>Welcome {{name}}</h2>             ✔
+      <h2> {{2+2}}</h2>                     ✔
+      <h2> {{"Welcome"+ name}}</h2>         ✔
+      <h2>{{name.length}}</h2>              ✔
+      <h2>{{name.toUpperCase()}}</h2>       ✔
+      <h2>{{greetUser()}}</h2>              ✔
+      <h2>{{a= 2+2}}</h2>                   X   //This is not possible in interpolation,Template Parse Error will be shown, bindings cannot contain assignments
+      <h2>{{window.location.href}}</h2>     X   // Error will be thrown cannot read property location of undefined, So the template is not aware of global JS variable.
+      <h2>{{siteUrl}}                       ✔  //In this way we can access global url.
+    </div>
+  `,
+  styles: [`
+    .text-success{
+      color: green;
+    }
+    .text-danger{
+      color: red;
+    }
+    .text-special{
+      font-style: italic;
+    }
+  `]
+})
+export class TestComponent implements OnInit 
+{  
+ public name="Raj";
+public siteUrl=window.location.href;          //Here is the logic for accessing global url
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  greetuser(){
+    return "Hello"+this.name;
+  }
+
+}

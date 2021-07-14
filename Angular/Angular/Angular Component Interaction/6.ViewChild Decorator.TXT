@@ -1,0 +1,67 @@
+In app.component.ts,
+export class AppComponent extends AfterViewInit {
+  pageTitle = 'Angular Component Interaction';
+  imgUrl = 'https://picsum.photos/200';
+  count:integer = 0;
+  name: string;
+  userName:string;
+  firstName:string;
+   private _customerName: string;
+  @ViewChild('nameRef')nameElementRef:ElementRef;
+
+      ngAfterViewInit() {
+        this.nameElementRef.nativeElement.focus();
+     }
+
+
+  get customerName(): string {
+    return this._customerName;
+  }
+
+  set customerName(value: string) {
+    if (value === 'Vishwas') {
+      alert('Hello Vishwas!');
+    }
+    this._customerName = value;
+  }
+
+  incrementCounter() {
+    this.count += 1;
+  }
+
+   greetVishwas(updatedValue) {
+    if (updatedValue === 'Vishwas') {
+      alert('Welcome back Vishwas');
+    }
+    this.userName = updatedValue;
+  }
+
+}
+--------------------------------------------------------
+In app.component.html,
+<h1>{{ pageTitle }}</h1>
+<div>
+  <img [src]="imgUrl" alt="Image">
+</div>
+<div>
+  <button (click)='incrementCounter()'>Click</button>
+  <p>Clicked {{ count }} times</p>
+</div>
+<div>
+  <input #nameRef type="text" [(ngModel)]='name'>
+  <p>Welcome {{ name }}</p>
+</div>
+
+<div>
+  <input type="text" [ngModel]='userName' (ngModelChange)='greetVishwas($event)'>
+  <p>Welcome {{ userName }}</p>
+</div>
+<div>
+  <input type="text" [ngModel]='firstName' (ngModelChange)='firstName=$event'>
+  <p>Welcome {{ firstName }}</p>
+</div>
+
+<div>
+  <input type="text" [(ngModel)]='customerName'>
+  <p>Welcome {{ customerName }}</p>
+</div>

@@ -1,0 +1,30 @@
+1)db.user.updateOne({name:"Manuel"},{$inc:{age:1}})                      //It updates the age of Manuel to 1.So if age is 30 it would be 31. -1 suggests decrease in age by 1. 2 suggests increase in age by 2 and so on.
+2)db.user.updateOne({name:"Manuel"},{$max:{age:35}})                      //If the age of Manuel is less than 35 then it sets the value to 35.If it is greater than 35 then it doesn't change anything.
+3)db.user.updateOne({name:"Manuel"},{$min:{age:19}})                      //If the age of Manuel is greater than 19 then it sets the value to 19.If it is less than 19 then it doesn't change anything.
+4)db.user.updateOne({name:"Manuel"},{$mul:{age:1.1}})                      //Increases the age of Manuel by 10%.
+5)db.user.updateOne({name:"Manuel"},{$unset:{phone:""}})                   //It completely deletes the phone field.Other way is setting the value to null,but it would still contain a field.Whereas $unset completely removes the field from that document.
+6)db.user.updateMany({},{$rename:{age:"TotalAge"}})                        //It updates all the "age" field to be renamed as "TotalAge" in the collection.
+
+7)db.user.updateOne({name:"Rose"},{$set:{age:21,hobbies:["Basketball",Baseball]}},{upsert:true})       //Here upsert is placed in a 3rd argument. Initially,the collection doesn't have any document with Rose as the value of "name" field.So upsert means that if it doesn't have then insert it.If it would be present originally then it would just update the values.
+
+8)db.user.updateMany({hobbies:{$elemMatch:{title:"Sports",{frequency:{$gte:3}}}}},{$set:{"hobbies.$.highFrequency":true}})           //Here we want to set highFrequency:true where we find title:sports and frequency:>3.Because of $elemMatch this has to be within the same embedded document in an array.This is for all user as we have mentioned updateMany.
+
+9)db.user.updateMany({totalAge:{$gte:30}},{$inc:{"hobbies.$[].frequency":-1}})      //Here update all the frequency field in the array of embedded documents which has TotalAge>30.Here $[] means to all the array elements.
+
+10)db.user.updateMany({"hobbies.frequency":{$gt:2}},{$set:{"hobbies.$[el].goodFrequency":true}},{arrayFilters:[{"el.frequency":{$gt:2}}]})           //Here el is user-defined, It sets goodFrequency:true in those embedded documents in an array whose condition matches as given in the query.Here a third argument is introduced named arrayFilters to check inside embedded documents under the array and set the property as given in the second argument.
+
+11)db.user.updateOne({name:"Maria"},{$push:{hobbies:{title:"Gym",frequency:2}}})          //Pushes the passed doument into the array hobbies.
+
+12)db.user.updateOne({name:"Maria"},{$push:{hobbies:{$each:[{title:"Gym",frequency:2},{title:"Cooking",frequency:3}]}}})        //To insert multiple embedded documents into an array,we have to use $each.
+
+13)db.user.updateOne({name:"Maria"},{$push:{hobbies:{$each:[{title:"Gym",frequency:2},{title:"Cooking",frequency:3}],$sort:{frequency:-1}}}})        //Does the above operation and also sorts in descending order.
+
+14)db.user.updateOne({name:"Maria"},{$pull:{hobbies:{title:"Cooking"}}})                 //It deletes all the embedded documents inside the array which matches the title field value=cooking.
+
+15)db.user.updateOne({name:"Maria"},{$pop:{hobbies:1}})                                 //It removes the last element from the array hobbies. If the value would be -1 then it would have removed the first element.
+
+16)db.user.updateOne({name:"Maria"},{$addToSet:{hobbies:{title:"Gym",frequency:2}}})      //It does the same like $push but here if we try duplication then it won't allow.It can be done for only one element. So $each can't be used here.
+
+
+
+ 

@@ -1,0 +1,20 @@
+@Component({
+  selector: 'app-test',
+  template: `
+<div *ngFor="let color of colors; index as i">     //index will print the index number starting from 0.
+      <h2>{{i}} {{color}}</h2>
+    </div>
+  `,
+  styles: []
+})
+export class TestComponent implements OnInit {
+
+  public displayName = false;
+  public color = "red";
+  public colors = ["red","blue","green","yellow"]
+
+  constructor() { }
+
+  ngOnInit() {
+    }
+}

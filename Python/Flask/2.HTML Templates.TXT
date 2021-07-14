@@ -1,0 +1,54 @@
+from flask import Flask,redirect,url_for,render_template
+app = Flask(__name__)
+
+@app.route("/<name>")
+def home(name):
+	return render_template("index.html",content=name,j=10)
+
+@app.route("/for")
+def for1():
+    return render_template("for.html",sam=["Ram","Shyam","Gopal"])	
+
+if __name__=="__main__":
+    app.run()
+
+
+-----------------------------------------
+Create a new folder in the same directory and rename it to templates as Python will understand it,
+Inside that templates folder,
+
+index.html,
+<html>
+   <head>
+   	   <title>First App</title>
+   	</head>
+   	<body>
+   		<h1>Hello World</h1>
+   		<p>{{content}}</p>
+   		<p>{{j}}</p>
+   	</body>
+</html>
+
+for.html,
+<html>
+   <head>
+   	   <title>First App1</title>
+   	</head>
+   	<body>
+   		<h1>Hello World</h1>
+<!--   		{% for x in range(10) %}
+   		      {% if x%2==0 %}
+   		         <p>Hello</p>
+   		      {% endif %}   
+   		{% endfor %}   -->
+            {% for x in sam %}
+               {%if x=='Ram'%}
+                 <p>Not</p>
+               {% elif x=='Shyam'%}
+                  <p>{{x}}</p>
+               {% else %}
+                  <p>{{x}}</p>   
+               {% endif %}
+            {% endfor %}     
+   	</body>
+</html>	

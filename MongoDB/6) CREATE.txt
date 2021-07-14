@@ -1,0 +1,35 @@
+Methods to do insert operations:-
+--------------------------------------
+a. insertOne()
+b. insertMany()
+c. insert()               //It is an old method where nothing is specific whether one document can be added or multiple documents.
+
+C:\>db.hobbies.insertMany([{name:"Cooking",_id:"cooking"},{name:"Jumping",_id:"jumping"},{name:"Swimming",_id:"swimming"}])
+C:\>db.hobbies.insertMany([{name:"Playing",_id:"playing"},{name:"cooking",_id:"cooking"},{name:"Running",_id:"running"}])
+In the later command,it will throw an error saying _id:"cooking" already exists. MongoDB initially goes ordered way,so "Playing" will be added but from "cooking" and onwards everything will be cancelled.
+C:\>db.hobbies.insertMany([{name:"Skiing",_id:"skiing"},{name:"cooking",_id:"cooking"},{name:"Running",_id:"running"}],{ordered:false})       //As we mentioned unoredered: false ,it will add running to the db even though cooking terminates due to duplicate id.
+The meaning is it doesn't go on sequentially anymore, the _id which satisfies will be added to db irrespective of the order of potrayal of commands.
+
+ Shell(Client) --------------- MongoDB Server ---------------------- Storage Engine
+                                                                      1)Memory
+								      2)Data on Disk
+
+Initially,we open up the server then open shell which is MongoDB client to talk with the Database. So, when we do some insert operations it initially goes to the Storage Engine which manages the memory and provides a tunnel to the Mongo Database. Before any thing anything added to the DB it gets into the memory and then it ups into the DB. Every document or collection that is fetched from DB is stored in memory to speed its frequency of retrieval.
+We can also do insert operations by insertOne() or insertmany() by providing a second option other than the document is writeConcern.
+WriteConcern can accept three paramters. w->write            value-> numeric (These indicate the number of instances in Mongo Server to write. By default it set to 1. And 1 means Storage Engine should accepted that write and store to the disk.
+                                         j->journal          value->boolean  (Journal is an additional file which the storage engine manages which acts like a todos file.The journal can be kept to save operations like the Storage Engine needs to do that has not been completed yet like the write.
+                                                                              The idea of journal file which is the real file on the disk is that it is aware of it, and if bychance the server goes down then the file will be still there and if the server recovers or restarts then it can locate to that file and see what it needs to do further. So its like a nice backup because the memory maybe wiped by then.So our write could be lost if its not written to the journal, and if it hasn't been written to real DB.
+                                                                              Question arises, why not write directly to the DB rather than going to Journals is because writing to DB is really heavy.Journal is like to write in a single line,whereas in DB we have to find the right position to write.
+                                                                              By default j is set to undefined,so we don't know if it writes to journal or not. Even if it writes,we won't mentioned beacuse it is set to undefined.
+                                                                              If the value is true then it will report a success back saying it has been acknowleged and written to journal.)
+                                         wtimeout->timeout   value->numeric  (It defines upto which timeframe we give to report a success to write before we cancel it. It generally happens due to issues in network.
+
+Now if we set w to 0 that means we just write and it returns acknowleded as false.Because we didn't gave time.It will still be stored in the collection but acknowledgement and _id won't be returned back and we won't know whether it was successfully written or not.We can check whether it is stored using find().
+C:\>db.names.insertOne({name:'Sam',age:12},{writeConcern:{w:1,j:true,wtimeout:10}})
+
+Atomic operation:- It means that if in a particular document while saving to DB some fields were inserted and suddenly the server crashes and the remaining fields were not saved.
+                   But MongoDb assures that either the whole fields will be inserted to save or it will rolled back.It happens only with insertOne(),but in case of InsertMany() multiple documents will be added and it only ensures either ordered or unordered.
+
+
+
+                                                                         

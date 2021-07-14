@@ -1,0 +1,36 @@
+The need for this to create a sync between the Model And View.
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-test',
+  template: `
+    <div>
+       <input type="text" [(ngModel)]="name">              //Here we are binding the the view with the property value. So any change in the attribute value will be reflected instantaneously within the view.
+                                                           //Since ngModel directive is contained in another module, we have to import it into the app.module.ts file,
+      {{name}}
+      
+    </div>
+  `,
+  styles: []
+})
+export class TestComponent implements OnInit 
+{  
+public name="";
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  logMessage(value){
+    console.log(value)
+  }
+}
+
+Changes in app.module.ts file,
+import { FormsModule } from '@angular/forms';
+
+imports: [
+    BrowserModule,
+    FormsModule
+  ]

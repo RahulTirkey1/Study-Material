@@ -1,0 +1,46 @@
+->Lists are ordered sequennces that can hold a variety of object types.
+->They use [] and , to separate objects in the list
+->Lists support ordering and slicing.Lists can also be nested.
+
+I-> my_list = [1,2,3]
+I-> my_list = ['A string',23,100.232,'o']   //Can store different types of objects.
+I-> len(my_list)
+O-> 4
+
+Indexing and Slicing
+--------------------
+I-> my_list = ['one','two','three',4,5]
+I-> my_list[0]
+O-> 'one'
+I-> my_list[1:]        //Grab index 1 and everything past it
+O-> ['two', 'three', 4, 5]   
+I-> my_list[:3]        //Grab everything UP TO index 3 excluding index 3.
+O-> ['one', 'two', 'three']
+I-> my_list[0]='onejka'    //Here we can change the content unlike in string(immutable)
+I-> my_list
+O-> ['onejka','two','three',4,5]
+I-> my_list.append('hello')
+O-> ['onejka','two','three',4,5,'hello']
+I-> my_list.pop()                       //Removes the last element
+O-> 'hello'
+I-> my_list
+O-> ['onejka','two','three',4,5]
+I-> my_list.pop(1)                     //Removes the selected index
+O-> 'two'
+
+I-> h=['c','d','a','b']
+I-> h.sort()          //Here it doesn't return anything.
+I-> h
+O-> ['a','b','c','d']
+If we try assigning the c=h.sort(), then c doesn't have anything because sort() doesn't return anything.
+If we try type(c) ,
+I-> lis=h.sort()
+I-> type(lis)
+O-> NoneType                  //It means the given variable doesn't return anything
+I-> a=[3,7,5,4]
+I-> a.sort()
+I-> a
+O-> [3,4,5,7]
+I-> a.reverse()
+O-> [7,5,4,3] 
+

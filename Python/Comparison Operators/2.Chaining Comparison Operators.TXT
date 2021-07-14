@@ -1,0 +1,17 @@
+->We can use logical operators to combine comparisons,
+  and
+  or
+  not
+
+I-> 2<3 and 3>2
+O-> True
+I-> 2>3 and 3>2
+O-> False
+I-> 2==3 and 3>2
+O-> False
+I-> 2>3 or 3>2
+O-> True
+I-> not 1==3
+O-> True
+I-> 1==3
+O-> False

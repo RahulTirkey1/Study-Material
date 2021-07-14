@@ -1,0 +1,75 @@
+Now there is a parent component and a child component. We can use @Input() to send data from parent to child.
+And @Output() from child to parent.
+
+From Parent to Child,
+--------------------------
+Open app.component.ts file,
+export class AppComponent {
+  title = 'app';
+  public name = "Vishwas";
+  public message = "";
+}
+Now open app.component.html
+<h1>
+    Welcome to {{title}}
+    {{message}}
+  </h1>
+</div>
+
+Now open test.component.ts,  (This is the child component)
+@Component({
+  selector: 'app-test',
+  template: `
+    <h2>
+      Codevolution
+      {{"Hello " + name}}
+    </h2>
+styles: []
+})
+export class TestComponent implements OnInit {
+
+  @Input('parentData') public name;
+
+constructor() { }
+
+  ngOnInit() {
+  }
+}
+
+
+
+Now from Child to Parent,
+-----------------------------------
+It is only done by emmiting events.
+
+So open test.component.ts,
+@Component({
+  selector: 'app-test',
+  template: `
+    <h2>
+ 
+    <button (click)=fireEvent()>Send Event</button>
+      <h2>
+  `,
+  styles: []
+})
+export class TestComponent implements OnInit {
+
+  @Output() public childEvent = new EventEmitter<string>();
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+  fireEvent(){
+    this.childEvent.emit('Hey Codevolution');
+  }
+}
+
+Now in app.component.html,
+ <h1>
+    {{message}}
+  </h1>
+</div>
+<app-test (childEvent)="message=$event"></app-test>

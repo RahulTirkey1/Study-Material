@@ -1,0 +1,65 @@
+LEGB Rule.
+L: Local — Names assigned in any way within a function (def or lambda)), and not declared global in that function.
+E: Enclosing function locals — Name in the local scope of any and all enclosing functions (def or lambda), from inner to outer.
+G: Global (module) — Names assigned at the top-level of a module file, or declared global in a def within the file.
+B: Built-in (Python) — Names preassigned in the built-in names module : open,range,SyntaxError,...
+
+I->name = 'This is a global name'
+   def greet():
+      # Enclosing function
+      name = 'Sammy'
+      def hello():
+        print 'Hello '+name
+      hello()
+   greet()
+O->Hello Sammy
+I->name = 'This is a global name'
+   def greet():
+      # Enclosing function
+     # name = 'Sammy'
+      def hello():
+        print 'Hello '+name
+      hello()
+   greet()
+O->Hello This is a global name
+
+I->x=50
+I->def func(x):
+       print(x)
+       x=100
+       print(f'New value {x}')
+I->print(x)
+O->50
+I->func(x)
+O->50
+   New value 100
+I->print(x)
+O->50
+Here value of x still remains 50.
+
+To change it we can do it in global scope,
+I->x=50
+I->def func():
+       global x              //We mention this to affect the global variable x
+       print(x)
+       x=100
+       print(f'New value {x}')
+I->print(x)
+O->50
+I->func()
+O->50
+   New value 100
+I->print(x)
+O->100                  //Here the value is changing globally,
+
+But we shouldn't use global lightly,To avoid that we can use
+I->x=50
+I-> def func(x)
+        print(x)
+        x=100
+        return x
+I->print(x)
+O->50
+I->k=func(x)
+I->k()
+O->100          //Here value is changed because we returned the previous value

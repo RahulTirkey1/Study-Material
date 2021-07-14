@@ -1,0 +1,32 @@
+To do a custom validation and to be applied to all classes,
+Here in the username fromControl we are trying to filter out invalid names according to our logic and when it appears it should show a visual error.
+
+We created a validator.ts class,
+import { ValidatorFn, AbstractControl } from '@angular/forms';
+
+export function ForbiddenNameValidator(forbiddenName: RegExp): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const forbidden = forbiddenName.test(control.value);
+    return forbidden ? { 'forbiddenName': { value: control.value } } : null;
+  };
+}
+
+----------------------------------------------
+In app.component.ts,
+registrationForm = this.fb.group({
+    userName: ['', [Validators.required, Validators.minLength(3), ForbiddenNameValidator(/password/),forbiddenNameValidator(/admin/)]],       //Here we as add as many validators according to our need
+    password: [''],
+    confirmPassword: [''],
+});
+
+----------------------------------------------
+In app.component.html,
+ <div class="form-group">
+    <label>Username</label>
+      <div *ngIf="userName.invalid && userName.touched">
+        <small class="text-danger" *ngIf="userName.errors?.required">Username is required</small>
+        <small class="text-danger" *ngIf="userName.errors?.minlength">Username must be at least 3 characters</small>
+        <small class="text-danger" *ngIf="userName.errors?.forbiddenName">'{{userName.errors?.forbiddenName.value}}' username not allowed</small>
+      </div>
+    </label>
+ </div> 

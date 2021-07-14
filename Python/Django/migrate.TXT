@@ -1,0 +1,70 @@
+Migrations are Django’s way of propagating changes you make to your models (adding a field, deleting a model, etc.) into your database schema.
+They’re designed to be mostly automatic, but you’ll need to know when to make migrations, when to run them, and the common problems you might run into.
+
+The Commands:-
+--------------------------------------
+There are several commands which you will use to interact with migrations and Django’s handling of database schema:
+migrate----> which is responsible for applying and unapplying migrations.
+makemigrations----> which is responsible for creating new migrations based on the changes you have made to your models.
+sqlmigrate----> which displays the SQL statements for a migration.
+showmigrations----> which lists a project’s migrations and their status.
+
+
+To check the User when creating Models the following queries can generate SQL results in Python shell,
+I->from blog.models import Post                        //Here blog is my appname in Django project,Post is the model name
+I->from django.contrib.auth.models import User
+I->User.objects.all()                         //Shows all the users.
+O-><QuerySet [<User: rahul>, <User: tarzan>, <User: ram>]>
+I->User.objects.first()
+O-><User: rahul>
+I->User.objects.last()
+O-><User: ram>
+I->User.objects.filter(username='ram')                 //If multiple username with the same name then it would return multiple results
+O-><User: ram>
+I->User.objects.filter(username='ra')
+O-><QuerySet []>                                      //No user with that name so no output
+I->User.objects.filter(username='ram').first()
+O-><User: ram>
+I->user=User.objects.filter(username='ram').first()
+I->user
+O-><User: ram>
+I->user.id
+O->3
+I->user.pk                                            //Get the primary key
+O->3
+I->user=User.objects.get(id=1)
+I->user
+O-><User: rahul>
+I->user.pk
+O->1
+I->Post.objects.all()
+O-><QuerySet []>
+
+We have created a model name Post with properties title,content,date_posted,author(FK to User Model)
+I->post_1=Post(title='Blog 1',content='First Blog content',author=user)
+I->post_1
+O-><Post: Post object (None)>                      //It shows none because we didn't save it to the DB.
+I-> post_1.save()
+I-> post_1
+O-><Post: Post object (1)>
+I->Post.objects.all()
+O-><QuerySet [<Post: Post object (1)>]>
+I->post_2=Post(title='Blog 2',content='Second Blog content',author=user)
+I->post_2.save()
+I->Post.objects.all()
+O-><QuerySet [<Post: Post object (1)>, <Post: Post object (2)>]>
+I->post=Post.objects.first()
+I->post.author
+O-><User: rahul>
+I->post.date_posted
+O->datetime.datetime(2020, 12, 15, 18, 37, 7, 899369, tzinfo=<UTC>)
+I->post.author.email
+O->'rahul.tirkey303@gmail.com'
+I->user.post_set                                 //Here the syntax is (user.modelname_set) So in our case it is user.post_set.Ofcourse everything has to be lowercase
+O-><django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager object at 0x0000022BC3560188>
+I->user.post_set.all()                            //To get all the posts of that user
+O-><QuerySet [<Post: Post object (1)>, <Post: Post object (2)>]>
+I->user.post_set.create(title='Blog 3',content='Third Blog content')                      //We created a post directly from user.Here the author property is not required as it bydefault takes the user.Here author property is FK to User model
+O-><Post: Post object (3)>
+I->user.post_set.all()
+O-><QuerySet [<Post: Post object (1)>, <Post: Post object (2)>, <Post: Post object (3)>]>

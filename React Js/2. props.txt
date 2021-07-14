@@ -1,0 +1,58 @@
+“Props” is a special keyword in React, which stands for properties and is being used for passing data from one component to another.
+React props are mutable objects.Once alloted a value,it cannot be changed.
+React Props are like function arguments in JavaScript and attributes in HTML.
+
+It is used for giving dynamic values, props is a object which is passed as a argument to a function for rendering a particular attribute in the DOM.
+
+Example:-
+Add a "brand" attribute to the Car element:
+In app.js(main file)
+const myelement = <Car brand="Ford" color:'Black'/>;
+ReactDom.render(myelement,document.querySelector(.app));
+
+The component receives the argument as a props object:
+
+Use the brand attribute in the component:
+In component.js file,
+class Car extends React.Component {
+  render() {
+    return(<h2>I am a {this.props.brand} and it is having {this.props.color});
+  } 
+Pass Data:-
+----------------------------------------------------
+Props are also how you pass data from one component to another, as parameters.
+
+Example:-
+class Car extends React.Component {
+  render() {
+    return <h2>I am a {this.props.brand}!</h2>;
+  }
+}
+
+class Garage extends React.Component {
+  render() {
+    return (
+      <div>
+      <h1>Who lives in my garage?</h1>
+      <Car brand="Ford" />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<Garage />, document.getElementById('root'));
+
+Props in the Constructor:-
+------------------------------------------------------------
+If your component has a constructor function, the props should always be passed to the constructor and also to the React.Component via the super() method.
+Example:-
+class Car extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return <h2>I am a Car!</h2>;
+  }
+}
+
+ReactDOM.render(<Car model="Mustang"/>, document.getElementById('root'));

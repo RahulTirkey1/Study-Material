@@ -1,0 +1,47 @@
+map()
+-----------------
+It takes two arguments,1st-function,2nd-iterable
+
+I->def func(num):
+     return num**2
+I->mylist=[1,2,3,4]
+I->for i in map(func,mylist)
+      print(i)
+O->1
+   4
+   9
+   16
+we can also put it like this,
+I->list[map(func,mylist)]
+O->[1,4,9,16]
+
+filter()
+-------------------
+It takes two arguments,1st-function,2nd-iterable
+It filters upon a given condition.
+
+I->def check_even(num):
+      return num%2==0
+   mylist=[1,2,3,4]
+   for i in filter(check_num,mylist):
+       print(i)
+O->2
+   4
+I->list[filter(check_even,mylist)]
+O->[2,4]
+
+lambda expression
+----------------------------
+I->square=lambda num:num**2
+I->square(5)
+O->25
+
+use with map()
+I->mylist=[1,2,3,4,5]
+I->list[map(lambda num:num**2,mylist)]
+O->[1,4,9,16,25]
+
+use with filter()
+I->mylist=[1,2,3,4,5]
+I->list[filter(lambda num:num%2==0,mylist)] 
+O->[2,4]

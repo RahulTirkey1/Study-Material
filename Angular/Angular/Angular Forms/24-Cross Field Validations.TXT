@@ -1,0 +1,38 @@
+Here in this example, we want to verify that password and confirmPassword is same.
+And for this, we have to create another customervalidator.
+
+passwordvalidator.ts,
+import { AbstractControl } from '@angular/forms';
+    
+export function PasswordValidator(control: AbstractControl): { [key: string]: boolean } | null {                 //Here in this case, control refers to the formGroup rather than formControl,we do this to verify two formControls as all will be grouped under one formGroup.
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+  if (password.pristine || confirmPassword.pristine) {
+    return null;
+  }
+  return password && confirmPassword && password.value !== confirmPassword.value ? { 'misMatch': true } : null;
+}
+-----------------------------------------------------------------------
+Changes in app.component.ts,
+registrationForm = this.fb.group({
+    userName: ['', [Validators.required, Validators.minLength(3), ForbiddenNameValidator(/password/)]],
+    password: [''],
+    confirmPassword: [''],
+    address: this.fb.group({
+      city: [''],
+      state: [''],
+      postalCode: ['']
+    })
+  });
+  }, {validator: PasswordValidator});                        //Here we putting the custom Validator.
+
+  get userName() {
+    return this.registrationForm.get('userName');
+
+-------------------------------------------------
+In app.component.html,
+<div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" [class.is-invalid]="registrationForm.errors?.misMatch" formControlName="confirmPassword" class="form-control">
+      <small class="text-danger" *ngIf="registrationForm.errors?.misMatch">Passwords do not match</small>
+    </div>

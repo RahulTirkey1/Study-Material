@@ -1,0 +1,53 @@
+To track the value of any formControl we can use the valueChanges property. Every formControl provides it's current value as an Observable through the valueChanges property.
+We subscribe to the Observable and conditionally apply validations to valueChanges property based on formControl value.
+
+Now we subscribe on lifecycle methods named ngOnInit() . If not already present then extend the typescript class with OnInit.
+
+In this example, we will put two extra elements subscribe(checkbox) and email(text). Here email can be empty if subscribe checkbox is not checked. If it is checked and email field is empty then display the error.
+
+app.component.ts,
+export class AppComponent implements OnInit {
+
+  registrationForm: FormGroup;
+  constructor(private fb: FormBuilder) { }
+
+  ngOnInit() {
+    this.registrationForm = this.fb.group({
+      userName: ['', [Validators.required, Validators.minLength(3), ForbiddenNameValidator(/password/)]],
+      password: [''],
+      confirmPassword: [''],
+      email: [''],
+      subscribe: [false],
+      address: this.fb.group({
+        city: [''],
+        state: [''],
+        postalCode: ['']
+      })
+    }, { validator: PasswordValidator });
+
+    this.registrationForm.get('subscribe').valueChanges
+      .subscribe(checkedValue => {
+        const email = this.registrationForm.get('email');
+        if (checkedValue) {
+          email.setValidators(Validators.required);
+        } else {
+          email.clearValidators();
+        }
+        email.updateValueAndValidity();
+      });
+  }
+
+
+--------------------------------------------------
+Changes in app.component.html,
+    <div class="form-check mb-3">
+      <input class="form-check-input" formControlName="subscribe" type="checkbox">
+      <label class="form-check-label">
+        Send me promotional offers
+     </label>
+    </div> 
+    <div class="form-group">
+      <label>Email</label>
+      <input type="text" [class.is-invalid]="email.invalid && email.touched" formControlName="email" class="form-control">
+      <small class="text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
+    </div>

@@ -1,0 +1,60 @@
+Suppose we want to create a new project which has routing components So type
+C:\>ng new route-demo --routing
+
+If we want to enable routing in an existing application then open and add
+index.html,
+<head>
+<base href="/">           //This is done so the application knows how to construct the url while navigating
+</head>
+
+In the app folder, create a new file app-routing.module.ts .This file knows the routing module for our application
+app-routing.module.ts,
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { DepartmentListComponent } from './department-list/department-list.component';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
+
+const routes: Routes = [
+  { path: 'departments', component: DepartmentListComponent },
+  { path: 'employees',   component: EmployeeListComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+export const routingComponents = [DepartmentListComponent, EmployeeListComponent]       //This we created to avoid duplication of imports in app.module.ts
+
+-----------------------------------------
+Then open app.module.ts and add
+app.module.ts,
+mport { AppRoutingModule, routingComponents } from './app-routing.module';
+import { AppComponent } from './app.component';
+@NgModule({
+  declarations: [
+    AppComponent,
+    routingComponents
+  ],
+  imports: [
+    BrowserModule,    
+    HttpClientModule                  
+  ],
+  providers: [EmployeeService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+---------------------------------
+Then again on terminal type,
+C:\>ng g c department-list -it -is                         //(it) is for inline template and (is) for inline style
+C:\>ng g c employee-list -it -is 
+
+
+--------------------------
+app.component.html,
+<nav>
+	<a routerLink="/departments" routerLinkActive="active">Departments</a>               //routerLinkActive actually enables a class in styles.css for special class to be enbaled when that link is active
+	<a routerLink="/employees" routerLinkActive="active">Employees</a>
+</nav>
+<router-outlet></router-outlet>                                        //This is essential as routing views go here

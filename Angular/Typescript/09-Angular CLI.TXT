@@ -1,0 +1,155 @@
+Install Angular cli by typing,
+C:\>npm install -g @angular/cli
+
+To create a new project,
+C:\>ng new projectname
+Once the project is created then we can run the project by,
+C:\>ng serve          //By default the server will run on port 4200
+And it does the following things,
+1)Builds the app(compile/transpile)
+2)Starts the Server
+3)Watches the source files
+4)Rebuilds the apps when source is updated(hot reload)
+
+We can also type the run the project,
+C:/>ng serve --open     //It will run the server and open the browser where automatically generate http://localhost:4200
+
+To run on a different port rather than on default port,
+C:\>ng serve --port 3500     //It will run on port 3500
+
+Behind the scenes,
+So when we first type http://loclahost:4200 it loads the index.html page and it has a tag named <app-root> provided by Angular.
+So this tag actually substitutes the content from src/app.component.ts file,
+This is app.component.ts file,
+import { Component } from '@angular/core';
+
+@Component({                           //Here @Component is a Angular decorator which is similar to annotations in Java.
+  selector: 'app-root',                  //@Component has a attribute called selector and it has the name of the tag which Angular recognizes(So,we can figure now from index.html the tag name.)
+  templateUrl: './app.component.html',   //@Component has an attribute called templateURL, and it has the content which will be substituted.
+  styleUrls: ['./app.component.css']  
+})
+export class AppComponent {
+  title = 'firstangularproject';       //We can see that this variable is exported and used in app.component.html file to display the content inside the variable title.Typescript 'property' is similar to Java 'field'
+}
+
+If something is written in double curly braces {{title}} then it reads the content and displays the contents.
+
+To add a new component to the angular project,
+C:\>ng generate component SalesList          //We can give any name
+Now it will generate few files and update our modules i.e, app.module.ts file,
+1)sales-list.component.ts           //It is the typescript component class.
+2)sales-list.component.html         //component template html
+3)sales-list.component.css          //the component private CSS file, it is exclusive to only filename components.
+4)sales-list.component.spec.ts      //the unit test specifications
+And after this it will add the component to the main app.module.ts file in src/app/app.module.ts
+
+           Previous                                                                      Updated
+---------------------------                                              -----------------------------------------     
+import { BrowserModule } from '@angular/platform-browser';               import { BrowserModule } from '@angular/platform-browser';                   
+import { NgModule } from '@angular/core';                                import { NgModule } from '@angular/core';    
+import { AppComponent } from './app.component';                          import { AppComponent } from './app.component';
+                                                                         import { SalesListComponent } from './SalesList/sales-list.component'
+@NgModule({                                                              @NgModule({
+  declarations: [                                                         declarations: [              
+    AppComponent                                                             AppComponent,
+  ],                                                                          SalesListComponent
+  imports: [                                                              ],
+    BrowserModule                                                         imports: [
+  ],                                                                        BrowserModule
+  providers: [],                                                           ],
+  bootstrap: [AppComponent]                                                providers: []
+ })                                                                        bootstrap: [AppComponent]
+export class AppModule { }                                                 })
+                                                                          export class AppModule { }
+
+Now we can use this <filename> tag is app.component.html file,
+
+We can also use the help of cli to create a class,
+C:\>ng generate class filename/SalesPerson                        //class will be named as SalesPerson but it will be stored under filename directory which is under app directory
+It is just a regular class with nothing in it other than the class defined.
+export class Salesperson
+{}
+
+We aim to display an sales table in the Browser using SalesList Component
+      Now we modify it like this, 
+      export class SalesPerson {
+
+        constructor(public firstName: string,
+                public lastName: string,
+                public email: string,
+                public salesVolume: number) {
+
+      }
+      }
+      
+      Now we open up SalesList.component.ts file and add,
+      import { Component, OnInit } from '@angular/core';
+      import { SalesPerson } from './sales-person';
+
+      @Component({
+      selector: 'app-SalesList',
+       templateUrl: './sales-list.component.html',
+      styleUrls: ['./sales-list.component.css']
+       })
+           export class SalesListComponent implements OnInit {
+
+           // create an array of objects
+           salesPersonList: SalesPerson[] = [
+           new SalesPerson("Anup", "Kumar", "anup.kumar@luv2code.com", 50000),
+           new SalesPerson("John", "Doe", "john.doe@luv2code.com", 40000),
+           new SalesPerson("Claire", "Murphy", "claire.murphy@luv2code.com", 90000),
+           new SalesPerson("Mai", "Truong", "mai.truong@luv2code.com", 60000)
+           ];
+
+           constructor() { }
+
+           ngOnInit() {
+              }
+
+            }
+
+
+       Now go the sales-list.component.html and type,
+      <table border="1">
+
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Sales Volume</th>
+            <th>Met Quota</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let tempSalesPerson of salesPersonList">                //Here *ngFor is like a loop, which will iterate over the elements of salesPersonList
+            <td>{{ tempSalesPerson.firstName }}</td>
+            <td>{{ tempSalesPerson.lastName }}</td>
+            <td>{{ tempSalesPerson.email }}</td>
+            <td>{{ tempSalesPerson.salesVolume }}</td>
+            <td>
+                <div *ngIf="tempSalesPerson.salesVolume >= 60000; else myElseBlock">Yes</div>            //myElseBlock is a userdefined name, it can be anything
+                <ng-template #myElseBlock>No</ng-template>
+            </td>
+        </tr>
+
+    </tbody>
+
+    </table>
+
+So, in the browser it will display a table. 
+
+Angular provides a directive ngIf, so it shows condition based on a condition/boolean expression
+There are many other directives, like ngSwitch,ngStyle..etc
+
+Angular provides currency formatting using Angular Pipes like display Rs or $ or Euro,
+Examples:- <p> Cost:{{200 | currency:'USD'}}
+
+In your component, you can make use of [ngClass] to conditionally apply styles to an element.
+The basic syntax is:
+
+    <div [ngClass]="{
+       'class1': condition  (the true condition),
+       'class2': !condition (else)
+    }"> 

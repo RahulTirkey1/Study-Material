@@ -1,0 +1,24 @@
+@Component({
+  selector: 'app-test',
+  template: ` <div>
+<h2 [style.color]="'orange'">Style Binding</h2> 
+      <h2 [style.color]="hasError ? 'red' : 'green'">Style Binding 2</h2>       //We can also apply conditions like these.           
+      <h2 [style.color]="highlightColor">Style Binding 3</h2>
+      <h2 [ngStyle]="titleStyles">Style Binding 4</h2>
+    </div>
+  `,
+  styles: []
+  })
+export class TestComponent implements OnInit
+{
+  public highlightColor = "orange";
+  public titleStyles = {
+    color: "blue",
+    fontStyle: "italic"                 //We cannot use hypen so we have to go by camelCase
+  }
+
+  constructor() { }
+
+  ngOnInit() {
+}
+}

@@ -1,0 +1,23 @@
+The following is a list of form-control from Angular which class is applied based on it's state and validity.
+
+  State                                            If True                             If Not True
+  --------                                     ----------------                     -----------------
+1.The control has been visited                   ng-touched                           ng-untouched
+2.The control's value has changed                ng-dirty                             ng-pristine
+3.The control's value is valid                   ng-valid                             ng-invalid
+
+For each of these classes, Angular provides a ngModel properties for tracking and validity,
+
+     Classes                              ngModel Properties
+  --------------                      -------------------------
+1.ng-touched                              touched
+2.ng-untouched                            untouched
+3.ng-dirty                                dirty
+4.ng-pristine                             pristine
+5.ng-valid                                valid
+6.ng-invalid                              invalid
+
+Example:-
+
+<input type="text" #name="ngModel">
+{{name.untouched}}                                              //It will return true or false depending upon the conditions of the state.

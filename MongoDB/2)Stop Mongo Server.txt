@@ -1,0 +1,1 @@
+C:\>net stop MongoDB       //It will stop the server.

@@ -1,0 +1,96 @@
+I->for i in range(5):
+      print(i)
+O->0
+   1
+   2
+   3
+   4
+I->for i in range(2,7):
+      print(i)
+O->2
+   3
+   4
+   5
+   6
+I->for i in range(2,11,2):                 //starting index:closing index:stepsize
+      print(i)
+O->2
+   4
+   6
+   8
+   10
+I->list[range(0,11,2)]
+O->[2,4,6,8,10]
+
+Enumerate Count,
+---------------------
+I->word='abcde'
+   for i in enumerate(word):              //It gives back the index number and values as tuples
+      print(i)
+O->(0, 'a')
+   (1, 'b')
+   (2, 'c')
+   (3, 'd')
+   (4, 'e')
+I->word='abcde'
+   for i,l in enumerate(word):
+      print(i,l)
+O->0 a
+   1 b
+   2 c
+   3 d
+   4 e
+
+Zip operator
+--------------
+I->l1=[1,2,3]
+   l2=['a','b','c']
+   for i in zip(l1,l2):
+     print(i)
+O->(1, 'a')
+   (2, 'b')
+   (3, 'c')
+
+in operator
+--------------
+I->'x' in ['a','b','c']
+O->False
+I->'x' in ['y','x','z']
+O->True
+I->'a' in 'Hello a World'
+O->True
+I->d={'xyz':435}
+   'xyz' in d.values()
+O->False
+I->d={'xyz':435}
+   'xyz' in d.keys()
+O->True
+
+Min,Max,Shuffle
+--------------------
+I->mylist=[1,5,2,6,4,8]
+I->min[mylist]
+O->1
+I->max[mylist]
+O->8
+I->from random import shuffle
+I->shuffle(mylist)                   //It shuffles the list.It also doesn't return anything.So trying to save it in a variable won't work
+I->mylist
+O->[2,4,6,1,8,5]
+I->from random import randint
+   randint(0,50)                //Generates a random number.It actually returns so we can store it in a variable
+O->36
+I->k=randint(1,50)
+I->k
+O->23
+
+input operator
+--------------------
+Accept an input from user,
+I->i=input('Input a number')       //Suppose the use enters 20
+I->i
+O->'20'             //It returns as a string type,
+I->int(i)          //Converts into integer
+O->20
+
+​

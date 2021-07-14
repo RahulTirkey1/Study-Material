@@ -1,0 +1,104 @@
+Suppose we wish to create extra formControls dynamically according to user needs.
+In this example, we try to dynamically add formControl when user wants to add new email address when a button is clicked,
+
+app.component.ts,
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+export class AppComponent implements OnInit {
+
+  registrationForm: FormGroup;
+  constructor(private fb: FormBuilder) { }
+
+  ngOnInit() {
+    this.registrationForm = this.fb.group({
+      userName: ['', [Validators.required, Validators.minLength(3), ForbiddenNameValidator(/password/)]],
+      password: [''],
+      confirmPassword: [''],
+      email: [''],
+      subscribe: [false],
+      address: this.fb.group({
+        city: [''],
+        state: [''],
+        postalCode: ['']
+      })
+       alternateEmails: this.fb.array([])             //For creating an array of Form Controls
+    }, { validator: PasswordValidator });
+
+    this.registrationForm.get('subscribe').valueChanges
+      .subscribe(checkedValue => {
+        const email = this.registrationForm.get('email');
+        if (checkedValue) {
+          email.setValidators(Validators.required);
+        } else {
+          email.clearValidators();
+        }
+        email.updateValueAndValidity();
+      });
+  }
+   get alternateEmails() {
+    return this.registrationForm.get('alternateEmails') as FormArray;
+  }
+
+  addAlternateEmail() {
+    this.alternateEmails.push(this.fb.control(''));
+  }
+}
+
+In app.component.html,
+<div class="container-fluid">
+  <h2>Registration Form</h2>
+
+  <form [formGroup]="registrationForm">
+    <div class="form-group">
+    <label>Username</label>
+      <div *ngIf="userName.invalid && userName.touched">
+        <small class="text-danger" *ngIf="userName.errors?.required">Username is required</small>
+        <small class="text-danger" *ngIf="userName.errors?.minlength">Username must be at least 3 characters</small>
+        <small class="text-danger" *ngIf="userName.errors?.forbiddenName">'{{userName.errors?.forbiddenName.value}}' username not allowed</small>
+      </div>
+    </label>
+ </div> 
+ <div class="form-group">
+      <label>Password</label>
+      <input type="password" formControlName="password"  class="form-control">
+   </div>
+ <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" [class.is-invalid]="registrationForm.errors?.misMatch" formControlName="confirmPassword" class="form-control">
+      <small class="text-danger" *ngIf="registrationForm.errors?.misMatch">Passwords do not match</small>
+    </div>
+ <div class="form-check mb-3">
+      <input class="form-check-input" formControlName="subscribe" type="checkbox">
+      <label class="form-check-label">
+        Send me promotional offers
+     </label>
+    </div> 
+  <div class="form-group">
+        <label>Email</label>
+        <button class="btn btn-secondary btn-sm m-2" (click)="addAlternateEmail()">Add e-mail</button>
+        <input type="text" [class.is-invalid]="email.invalid && email.touched" formControlName="email" class="form-control">
+      <small class="text-danger" [class.d-none]="email.valid || email.untouched">Email is required</small>
+      <div formArrayName="alternateEmails" *ngFor="let email of alternateEmails.controls; let i=index">
+        <input type="text" class="form-control my-1" [formControlName]="i">
+      </div>
+    </div>
+ <div formGroupName="address">
+
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" formControlName="city" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>State</label>
+        <input type="text" formControlName="state" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label>Postal Code</label>
+        <input type="text" formControlName="postalCode" class="form-control">
+      </div>
+
+  <button class="btn btn-primary" type="submit">Register</button>
+
+  </form>
+</div>

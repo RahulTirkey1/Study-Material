@@ -1,0 +1,4 @@
+C:\>mongod              //It starts the server
+ 
+Now if the default location is not in C: drive then we have to write,
+C:\>mongod --dbpath "Location" 

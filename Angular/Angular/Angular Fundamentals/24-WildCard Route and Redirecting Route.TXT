@@ -1,0 +1,23 @@
+Suppose a user types non mentioned url then it should show 404 not found,
+We try by creating a component for it,
+C:\>ng g c pagenotfound -it -is
+
+app-routing.module.ts,
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { DepartmentListComponent } from './department-list/department-list.component';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
+
+const routes: Routes = [
+  { path:'', redirectTo:'/departments', pathMatch:'full},        //It should be rendered by default upon ng serve
+  { path: 'departments', component: DepartmentListComponent },
+  { path: 'employees',   component: EmployeeListComponent }
+  { path:'**',component:PageNotFoundComponent }              //This is a wildcard route and it should be at the last, if any route doesn't match then render it.
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+export const routingComponents = [DepartmentListComponent, EmployeeListComponent,PageNotFoundComponent] 

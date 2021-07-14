@@ -1,0 +1,56 @@
+We use three keywords for this:-
+->try-This is the block of code to be attempted(Error may occur)
+->except-Block of code will execute in case there is an error in try block.
+->finally-A final block of code to be executed,regardless of error
+
+I->try:
+     f=open('cdx.txt','r')
+     f.write('Hello')
+   except TypeError:
+     print('There was a type error')
+   except OSError:
+     print('There was a OS error')
+   finally:
+     print('Code is complete')
+O->There was a OS error
+   Code is complete
+
+I->try:
+      add=10+"10"
+   except:
+      print('Error adding')
+   else:
+      print('Else block')
+      print(add)
+O->Error adding
+
+I->try:
+      add=10+"10"
+   except:
+      print('Error adding')
+   else:
+      print('Else block')
+      print(add)
+O->Else block
+   20
+
+I->def func():
+    while True:
+        try:
+            result=int(input('Please enter an integer: '))
+        except:
+            print('Please provide a proper Integer')
+            continue
+        else:
+            print('Got proper integer')
+            break
+        finally:
+            print('I run in the end')
+I->func()                                   //Suppose the user enters 10
+O->Please enter an integer: 10
+   Got proper integer
+   I run in the end
+I->func()                                   //Suppose the user enters abc
+O->Please enter an integer: abc
+   Please provide a proper Integer
+   I run in the end

@@ -1,0 +1,78 @@
+In most aspects, a generator function will appear very similar to a normal function. 
+The main difference is when a generator function is compiled they become an object that support an iteration protocol.
+That means when they are called in your code the don't actually return a value and then exit, the generator functions will automatically suspend and resume their execution and state around the last point of value generation.
+The main advantage here is that instead of having to compute an entire series of values upfront and the generator functions can be suspended, this feature is known as state suspension.
+
+I->def gencubes(n):
+       for num in range(n):
+          yield num**3
+I->for x in gencubes(5):
+       print x
+O->0
+   1
+   8
+   27
+   64
+
+Now since we have a generator function we don't have to keep track of every single cube we created.
+
+Generators are best for calculating large sets of results (particularly in calculations that involve loops themselves) in cases where we don’t want to allocate the memory for all of the results at the same time.
+
+I->def genfibon(n):
+      '''
+      Generate a fibonnaci sequence up to n
+      '''
+      a = 1
+      b = 1
+      for i in range(n):
+          yield a
+          a,b = b,a+b
+I->for num in genfibon(6):
+       print num
+O->1
+   1
+   2
+   3
+   5
+   8
+
+next():
+--------------------
+I->def simple_gen():
+    for x in range(3):
+        yield x
+I->g = simple_gen()
+I->print next(g)
+O->0
+I->print next(g)
+O->1
+I->print next(g)
+O->2
+I->print next(g)
+E->StopIteration                             Traceback (most recent call last)
+   <ipython-input-25-d013a5691c47> in <module>()
+    ----> 1 print next(g)
+    StopIteration
+
+iter():-
+----------------------------------------
+I->s = 'hello'
+   #Iterate over string
+   for let in s:
+      print let
+O->h
+   e
+   l
+   l
+   o
+I->next(s)
+E->TypeError                                 Traceback (most recent call last)
+   <ipython-input-27-bc0566bea448> in <module>()
+    ----> 1 next(s)
+   TypeError: str object is not an iterator
+I->s_iter = iter(s)
+I->next(s_iter)
+O->h
+I->next(s_iter)
+O->e
+
